@@ -73,6 +73,7 @@ in {
     gnumake
     libpulseaudio
     links2
+    julia
     nixfmt
     neovim
     neofetch
