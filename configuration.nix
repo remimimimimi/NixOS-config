@@ -8,6 +8,8 @@
 # If this not work to add unstable channel automatically:
 # $ sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
 # $ sudo nix-channel --update nixos-unstable
+# Past this to add unfree to unstable
+# import <nixos-unstable> { config = { allowUnfree = true; }; }
 let unstable = import <nixos-unstable> { };
 in {
   imports = [ # Include the results of the hardware scan.
