@@ -70,8 +70,10 @@
     neovim
     neofetch
     emojione
-    python3
+    (python3.withPackages
+      (ps: with ps; [ numpy toolz cython pytest isort pipenv pyflakes black ]))
     python3.pkgs.pip
+    pypi2nix
     ripgrep
     rustup
     xclip
@@ -86,6 +88,7 @@
     picom
     emacs
     links2
+
   ];
 
   environment.shellAliases = {
