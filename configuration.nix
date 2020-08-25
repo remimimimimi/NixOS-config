@@ -13,7 +13,6 @@
   nixpkgs.overlays = [
     (import ./nix-nerd-fonts-overlay/default.nix)
   ]; # Assuming you cloned the repository on the same directory
-  fonts.fonts = with pkgs; [ nerd-fonts.firacode ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -44,6 +43,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  fonts.fonts = with pkgs; [ nerd-fonts.firacode ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -55,6 +56,7 @@
     clang
     coreutils
     dunst
+    tdesktop
     fd
     feh
     fish
@@ -166,14 +168,14 @@
     # activeOpacity = "1.00";
     # inactiveOpacity = "0.92";
     settings = {
-      shadow-radius = 12;
       blur-background = true;
       blur-background-frame = true;
       blur-background-fixed = true;
-      # blur-background-frame = true;
-      # blur-background-fixed = true;
+
       blur-kern = "3x3box";
+      blur-method = "dual_kawase";
       blur-strength = 5;
+      blur-background-exclude = [ "class_g = 'slop'" ];
     };
   };
 
