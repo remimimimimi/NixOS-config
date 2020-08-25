@@ -6,20 +6,14 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-
-  nixpkgs.overlays = [ 
-    (import ./nix-nerd-fonts-overlay/default.nix) 
-    #(import (builtins.fetchTarball {
-    #  url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
-    #}))
-  ]; #Assuming you cloned the repository on the same directory
-  fonts.fonts = with pkgs; [
-    nerd-fonts.firacode
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
   ];
+
+  nixpkgs.overlays = [
+    (import ./nix-nerd-fonts-overlay/default.nix)
+  ]; # Assuming you cloned the repository on the same directory
+  fonts.fonts = with pkgs; [ nerd-fonts.firacode ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -41,7 +35,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-    font = "Lat2-Terminus16";
+    font = "FiraCode Nerd Font";
     keyMap = "us";
   };
 
@@ -61,7 +55,7 @@
     clang
     coreutils
     dunst
-    fd 
+    fd
     feh
     fish
     flameshot
@@ -70,6 +64,7 @@
     gnumake
     libpulseaudio
     links2
+    nixfmt
     neovim
     neofetch
     emojione
@@ -106,12 +101,10 @@
   #   pinentryFlavor = "gnome3";
   # };
 
-  programs.zsh.enable = true;
-
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -133,13 +126,7 @@
   services.xserver.autorun = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Enable touchpad support.
-  # services.xserver.libinput.enable = true;
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-
-  # window manager	
+  # window manager
   # services.xserver.windowManager.dwm.enable = true;
   services.xserver.windowManager.i3.enable = true;
   services.xserver.windowManager.i3.package = pkgs.i3-gaps;
@@ -149,21 +136,17 @@
     i3lock
   ];
 
+  programs.fish.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remi = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" ]; # Enable ‘sudo’ for the user.
+    extraGroups =
+      [ "wheel" "networkmanager" "video" ]; # Enable ‘sudo’ for the user.
     home = "/home/remi";
     description = "Remilia Scarlet";
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
-
-  ## Emacs version
-  #programs.emacs = {
-  #  enable = true;
-  #  package = pkgs.emacsGcc;
-  #  extraPackages = (epkgs: [ epkgs.vterm ] );
-  #};
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -187,7 +170,6 @@
       blur-background = true;
       blur-background-frame = true;
       blur-background-fixed = true;
-      # blur-background = true;
       # blur-background-frame = true;
       # blur-background-fixed = true;
       blur-kern = "3x3box";
