@@ -59,6 +59,7 @@ in {
     papirus-icon-theme
     kitty
     binutils
+    carnix
     clang
     coreutils
     dunst
