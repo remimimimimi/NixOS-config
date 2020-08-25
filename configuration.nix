@@ -74,6 +74,9 @@ in {
     gnumake
     libpulseaudio
     libtool
+    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
+      epkgs.emacs-libvterm
+    ]))
     links2
     julia
     nixfmt
@@ -97,11 +100,7 @@ in {
     firefox-devedition-bin
     picom
     unstable.emacs
-    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
-      epkgs.emacs-libvterm
-    ]))
     links2
-
   ];
 
   environment.shellAliases = {
