@@ -60,6 +60,7 @@ in {
     kitty
     binutils
     carnix
+    cmake
     clang
     coreutils
     dunst
@@ -72,6 +73,7 @@ in {
     gcc
     gnumake
     libpulseaudio
+    libtool
     links2
     julia
     nixfmt
@@ -95,6 +97,9 @@ in {
     firefox-devedition-bin
     picom
     unstable.emacs
+    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
+      epkgs.emacs-libvterm
+    ]))
     links2
 
   ];
