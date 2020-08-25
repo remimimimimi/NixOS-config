@@ -5,7 +5,8 @@
 
 { config, pkgs, ... }:
 
-{
+let unstable = import <nixos-unstable> { };
+in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -86,7 +87,7 @@
     starship
     firefox-devedition-bin
     picom
-    emacs
+    unstable.emacs
     links2
 
   ];
