@@ -78,7 +78,7 @@ in {
       epkgs.emacs-libvterm
     ]))
     links2
-    julia
+    unstable.julia_13
     nixfmt
     neovim
     neofetch
