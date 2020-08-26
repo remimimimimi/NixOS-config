@@ -70,6 +70,7 @@ in {
     fish
     flameshot
     font-awesome
+    julia_13-bin
     gcc
     gnumake
     libpulseaudio
@@ -78,7 +79,6 @@ in {
       epkgs.emacs-libvterm
     ]))
     links2
-    unstable.julia_13
     nixfmt
     neovim
     neofetch
