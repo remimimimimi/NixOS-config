@@ -1,24 +1,17 @@
-# Remi NixOS config file
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
 
-# If this not work to add unstable channel automatically:
-# $ sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
-# $ sudo nix-channel --update nixos-unstable
-# Past this to add unfree to unstable
-# import <nixos-unstable> { config = { allowUnfree = true; }; }
-let unstable = import <nixos-unstable> { };
+let unstable = import <nixos-unstable> { allowUnfree = true; };
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./cachix.nix
   ];
 
-  nixpkgs.overlays = [
-    (import ./nix-nerd-fonts-overlay/default.nix)
-  ]; # Assuming you cloned the repository on the same directory
+  nixpkgs.overlays = [ (import ./nix-nerd-fonts-overlay/default.nix) ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -51,44 +44,58 @@ in {
 
   fonts.fonts = with pkgs; [ nerd-fonts.firacode ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  services.picom = {
+    fade = true;
+    fadeSteps = [ "0.15" "0.15" ];
+    backend = "glx";
+    # shadow = true;
+    # shadowOffsets = [ (-10) (-10) ];
+    # shadowOpacity = "0.22";
+    # activeOpacity = "1.00";
+    # inactiveOpacity = "0.92";
+    settings = {
+      blur-background = true;
+      blur-background-frame = true;
+      blur-background-fixed = true;
+
+      blur-kern = "3x3box";
+      blur-method = "dual_kawase";
+      blur-strength = 5;
+      blur-background-exclude = [ "class_g = 'slop'" ];
+    };
+  };
+
   environment.systemPackages = with pkgs; [
+    alacritty
     arc-icon-theme
     arc-theme
     papirus-icon-theme
-    kitty
     binutils
     carnix
     cmake
     clang
     coreutils
     dunst
+    discord
     tdesktop
     fd
     feh
     fish
     flameshot
     font-awesome
-    julia_13-bin
     gcc
     gnumake
     libpulseaudio
     libtool
-    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
-      epkgs.emacs-libvterm
-    ]))
+    ((emacsPackagesNgGen emacs).emacsWithPackages
+      (epkgs: [ epkgs.emacs-libvterm ]))
     links2
     nixfmt
-    neovim
     neofetch
     emojione
-    (python3.withPackages
-      (ps: with ps; [ numpy toolz cython pytest isort pipenv pyflakes black ]))
-    python3.pkgs.pip
-    pypi2nix
     ripgrep
     rustup
+    unstable.rust-analyzer
     xclip
     git
     killall
@@ -97,9 +104,10 @@ in {
     openssh
     openssl
     starship
+    sccache
     firefox-devedition-bin
     picom
-    unstable.emacs
+    #unstable.emacs
     links2
   ];
 
@@ -108,6 +116,12 @@ in {
     nsh = "nix-shell";
     nen = "nix-env";
   };
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  # environment.systemPackages = with pkgs; [
+  #   wget vim
+  # ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -144,7 +158,6 @@ in {
   services.xserver.videoDrivers = [ "nvidia" ];
 
   # window manager
-  # services.xserver.windowManager.dwm.enable = true;
   services.xserver.windowManager.i3.enable = true;
   services.xserver.windowManager.i3.package = pkgs.i3-gaps;
   services.xserver.windowManager.i3.extraPackages = with pkgs; [
@@ -153,7 +166,12 @@ in {
     i3lock
   ];
 
-  programs.fish.enable = true;
+  # Enable touchpad support.
+  # services.xserver.libinput.enable = true;
+
+  # Enable the KDE Desktop Environment.
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remi = {
@@ -173,25 +191,5 @@ in {
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.03"; # Did you read the comment?
 
-  services.picom = {
-    fade = true;
-    fadeSteps = [ "0.15" "0.15" ];
-    backend = "glx";
-    # shadow = true;
-    # shadowOffsets = [ (-10) (-10) ];
-    # shadowOpacity = "0.22";
-    # activeOpacity = "1.00";
-    # inactiveOpacity = "0.92";
-    settings = {
-      blur-background = true;
-      blur-background-frame = true;
-      blur-background-fixed = true;
-
-      blur-kern = "3x3box";
-      blur-method = "dual_kawase";
-      blur-strength = 5;
-      blur-background-exclude = [ "class_g = 'slop'" ];
-    };
-  };
-
 }
+
