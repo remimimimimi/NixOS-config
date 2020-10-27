@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let unstable = import <nixos-unstable> { allowUnfree = true; };
 in {
@@ -165,6 +165,11 @@ in {
     i3status
     i3lock
   ];
+
+  services.xserver.displayManager.lightdm.greeters.gtk.cursorTheme = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+  };
 
   # Enable touchpad support.
   # services.xserver.libinput.enable = true;
