@@ -86,6 +86,7 @@ in {
     flameshot
     font-awesome
     gcc
+    gimp
     git
     gnumake
     kakoune
@@ -104,9 +105,12 @@ in {
     ripgrep
     rustup
     sccache
+    spotify
     starship
     tdesktop
-    #unstable.emacs
+    tdesktop
+    tmux
+    tokei
     unstable.rust-analyzer
     unzip
     wget
