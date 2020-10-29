@@ -69,46 +69,48 @@ in {
     alacritty
     arc-icon-theme
     arc-theme
-    papirus-icon-theme
     binutils
     carnix
-    cmake
     clang
+    cmake
     coreutils
-    dunst
     discord
-    tdesktop
+    dunst
+    ((emacsPackagesNgGen emacs).emacsWithPackages
+    emojione
+      (epkgs: [ epkgs.emacs-libvterm ]))
     fd
     feh
+    firefox-devedition-bin
     fish
     flameshot
     font-awesome
     gcc
+    git
     gnumake
+    kakoune
+    killall
     libpulseaudio
     libtool
-    ((emacsPackagesNgGen emacs).emacsWithPackages
-      (epkgs: [ epkgs.emacs-libvterm ]))
     links2
-    nixfmt
+    links2
     neofetch
-    emojione
-    ripgrep
-    rustup
-    unstable.rust-analyzer
-    xclip
-    git
-    killall
-    unzip
-    wget
+    nixfmt
     openssh
     openssl
-    starship
-    sccache
-    firefox-devedition-bin
+    papirus-icon-theme
     picom
+    ranger
+    ripgrep
+    rustup
+    sccache
+    starship
+    tdesktop
     #unstable.emacs
-    links2
+    unstable.rust-analyzer
+    unzip
+    wget
+    xclip
   ];
 
   environment.shellAliases = {
@@ -165,11 +167,6 @@ in {
     i3status
     i3lock
   ];
-
-  services.xserver.displayManager.lightdm.greeters.gtk.cursorTheme = {
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Ice";
-  };
 
   # Enable touchpad support.
   # services.xserver.libinput.enable = true;
