@@ -11,6 +11,10 @@ in {
     ./cachix.nix
   ];
 
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
+  hardware.pulseaudio.support32Bit = true;
+
   nixpkgs.overlays = [ (import ./nix-nerd-fonts-overlay/default.nix) ];
 
   # Use the systemd-boot EFI boot loader.
@@ -47,20 +51,20 @@ in {
   services.picom = {
     fade = true;
     fadeSteps = [ "0.15" "0.15" ];
-    backend = "glx";
     # shadow = true;
     # shadowOffsets = [ (-10) (-10) ];
     # shadowOpacity = "0.22";
     # activeOpacity = "1.00";
     # inactiveOpacity = "0.92";
     settings = {
+      blur = true;
       blur-background = true;
       blur-background-frame = true;
       blur-background-fixed = true;
 
       blur-kern = "3x3box";
       blur-method = "dual_kawase";
-      blur-strength = 5;
+      blur-strength = 10;
       blur-background-exclude = [ "class_g = 'slop'" ];
     };
   };
@@ -77,8 +81,8 @@ in {
     discord
     dunst
     ((emacsPackagesNgGen emacs).emacsWithPackages
-    emojione
       (epkgs: [ epkgs.emacs-libvterm ]))
+    emojione
     fd
     feh
     firefox-devedition-bin
@@ -86,7 +90,6 @@ in {
     flameshot
     font-awesome
     gcc
-    gimp
     git
     gnumake
     kakoune
@@ -105,23 +108,15 @@ in {
     ripgrep
     rustup
     sccache
-    spotify
     starship
     tdesktop
-    tdesktop
-    tmux
-    tokei
+    #unstable.emacs
     unstable.rust-analyzer
+    exa
     unzip
     wget
     xclip
   ];
-
-  environment.shellAliases = {
-    nix-env = "NIXPKGS_ALLOW_UNFREE=1 nix-env";
-    nsh = "nix-shell";
-    nen = "nix-env";
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -175,15 +170,17 @@ in {
   # Enable touchpad support.
   # services.xserver.libinput.enable = true;
 
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
+  # Setup docker
+  virtualisation.docker.enable = true;
+
+  # Fish shell
+  programs.fish.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remi = {
     isNormalUser = true;
     extraGroups =
-      [ "wheel" "networkmanager" "video" ]; # Enable ‘sudo’ for the user.
+      [ "wheel" "networkmanager" "video" "docker" ]; # Enable ‘sudo’ for the user.
     home = "/home/remi";
     description = "Remilia Scarlet";
     shell = pkgs.fish;
