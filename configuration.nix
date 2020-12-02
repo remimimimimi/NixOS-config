@@ -104,6 +104,7 @@ in {
     openssl
     papirus-icon-theme
     picom
+    pass
     ranger
     ripgrep
     rustup
