@@ -28,7 +28,6 @@
       sr = "sr -browser=qutebrowser";
       srg = "sr -browser=qutebrowser google ";
       cat = "bat --paging=never";
-      br = "broot";
 
       ls = "exa";
       ll = "exa -l";
@@ -44,6 +43,7 @@
       ct = "cargo test";
       cch = "cargo check";
       ccl = "cargo clean";
+      cx = "cargo xtask";
 
       # Zig aliases
       zr = "zig run";
@@ -62,7 +62,7 @@
       # pulse audio
       hearvoice = "pactl load-module module-loopback adjust_time=0 latency_msec=1 >> /dev/null";
       unhearvoice = "pactl unload-module module-loopback";
-      
+
       # Nix
       nsh = "nix-shell --command zsh";
       nia = "nix-env -iA";
