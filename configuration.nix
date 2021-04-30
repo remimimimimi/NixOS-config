@@ -8,7 +8,7 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
-in {
+in{
   # Allow unfree and unstable packages
   nixpkgs.config = {
     allowUnfree = true;
@@ -29,7 +29,8 @@ in {
 
 
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./zsh.nix
     ];
@@ -75,12 +76,13 @@ in {
     i3status
     i3lock
   ];
+  services.xserver.windowManager.spectrwm.enable = true;
 
   # Configure keyboard settings in X11
   services.xserver.layout = "us";
   services.xserver.autoRepeatDelay = 210;
   services.xserver.autoRepeatInterval = 40;
-  
+
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
@@ -194,4 +196,3 @@ in {
   system.stateVersion = "20.09"; # Did you read the comment?
 
 }
-
