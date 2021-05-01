@@ -8,7 +8,8 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
-in{
+in
+{
   # Allow unfree and unstable packages
   nixpkgs.config = {
     allowUnfree = true;
@@ -76,7 +77,6 @@ in{
     i3status
     i3lock
   ];
-  services.xserver.windowManager.spectrwm.enable = true;
 
   # Configure keyboard settings in X11
   services.xserver.layout = "us";
