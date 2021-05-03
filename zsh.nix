@@ -28,6 +28,7 @@
       sr = "sr -browser=qutebrowser";
       srg = "sr -browser=qutebrowser google ";
       cat = "bat --paging=never";
+      tt = "taskwarrior-tui";
 
       ls = "exa";
       ll = "exa -l";
