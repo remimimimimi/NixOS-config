@@ -83,14 +83,36 @@ in
             fetchSubmodules = true;
           };
         };
-        spaceline-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
-          pname = "spaceline-vim";
+        nvim-comment = pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "nvim-comment";
           version = "master";
           src = pkgs.fetchFromGitHub {
-            owner = "glepnir";
-            repo = "spaceline.vim";
-            rev = "94751d190a6912911c7789c1d5acb31a234bf22f";
-            sha256 = "a9iCnzVe31wWBrdk9OzC+xV4PtX47G0eAsdzlAFcwf8=";
+            owner = "terrortylor";
+            repo = "nvim-comment";
+            rev = "e7de7abf17204424065b926a9031f44b47efbf4a";
+            sha256 = "sbkjR33SDegwGHxbWLbJsMiI33xV6J+LB6nYW6UOo6Y=";
+            fetchSubmodules = true;
+          };
+        };
+        hydrangea-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "hydrangea-vim";
+          version = "master";
+          src = pkgs.fetchFromGitHub {
+            owner = "yuttie";
+            repo = "hydrangea-vim";
+            rev = "d07255fc06a251ee0be0b85fc4db3a69d8e2ee55";
+            sha256 = "Yh3Jjw9hAKf2b43O34TpEWDY5Sfhjo3aeMPlZlgwDgQ=";
+            fetchSubmodules = true;
+          };
+        };
+        lsp_signature-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "lsp_signature-nvim";
+          version = "master";
+          src = pkgs.fetchFromGitHub {
+            owner = "ray-x";
+            repo = "lsp_signature-nvim";
+            rev = "de68e0754019f7ff5822f3180b067d89f014943b";
+            sha256 = "OWieUMaH4Pas/XUXwVe/lE15zli4iyg6Yzb1ogWMNAE=";
             fetchSubmodules = true;
           };
         };
@@ -98,9 +120,6 @@ in
         [
           {
             plugin = vim-nix;
-          }
-          {
-            plugin = gruvbox-community;
           }
           {
             plugin = easymotion;
@@ -125,11 +144,8 @@ in
             plugin = context-vim;
             config = ''
               let g:context_enabled = 0
-              nnoremap gc :ContextPeek<CR>
+              nnoremap gi :ContextPeek<CR>
             '';
-          }
-          {
-            plugin = nerdcommenter;
           }
           {
             plugin = auto-pairs;
@@ -141,7 +157,7 @@ in
             config = ''
               nnoremap <silent> <leader>      :WhichKey '<leader>'<CR>
               nnoremap <silent> <localleader> :WhichKey '<localleader'CR>
-              "nnoremap <silent> g             :WhichKey 'g'<CR>
+              nnoremap <silent> g             :WhichKey 'g'<CR>
             '';
           }
           {
@@ -168,9 +184,6 @@ in
           #}
           #{
             #plugin = vim-visual-multi;
-            #config = ''
-
-            #'';
           #}
           {
             plugin = nvim-lspconfig;
@@ -190,13 +203,9 @@ in
               }
 
               lspconfig.rust_analyzer.setup {
-                capabilities  = capabilities ,
+                capabilities = capabilities,
               }
-              -- lspconfig.rust_analyzer.setup{
-              --   settings = {
-              --     rust-analyzer = { cargo = { target = "riscv64gc-unknown-none-elf"} }
-              --   }
-              -- }
+
               lspconfig.rnix.setup {}
               EOF
             '';
@@ -208,7 +217,7 @@ in
               lua << EOF
               local saga = require('lspsaga')
               saga.init_lsp_saga {}
-              require'lspsaga.diagnostic'.show_line_diagnostics()
+              -- require'lspsaga.diagnostic'.show_line_diagnostics()
               -- saga.init_lsp_saga {
               --   server_filetype_map = {
               --     metals = {
@@ -226,7 +235,12 @@ in
               nnoremap <silent><leader>la :Lspsaga code_action<CR>
 
               " Show signature help
-              nnoremap <silent><leader>ls :Lspsaga signature_help<CR>
+              nnoremap <silent>K :Lspsaga hover_doc<CR>
+
+              " scroll down hover doc or scroll in definition preview
+              nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+              " scroll up hover doc
+              nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 
               " Rename
               nnoremap <silent><leader>lr :Lspsaga rename<CR>
@@ -237,15 +251,6 @@ in
               " Float terminal also you can pass the cli command in open_float_terminal function
               nnoremap <silent> <A-d> :Lspsaga open_floaterm<CR>
               tnoremap <silent> <A-d> <C-\><C-n>:Lspsaga close_floaterm<CR>
-
-              "hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-              "hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-              "hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-              "augroup lsp_document_highlight
-              "  autocmd! * <buffer>
-              "  autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-              "  autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-              "augroup END
             '';
           }
           {
@@ -331,25 +336,47 @@ in
             plugin = unstable.vimPlugins.nvim-web-devicons;
           }
           {
-            plugin = spaceline-vim;
-            config = ''
-              let g:spaceline_seperate_style = 'none'
-              let g:spaceline_colorscheme = 'nord'
-            '';
-          }
-          {
-            plugin = nord-vim;
-            config = ''
-              set termguicolors
-              colorscheme nord
-            '';
-          }
-          {
             plugin = rust-vim;
             config = ''
               " Format on save
               let g:rustfmt_autosave = 1
               " autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
+            '';
+          }
+          {
+            plugin = nvim-comment;
+            config = ''
+              lua << EOF
+              require('nvim_comment').setup()
+              EOF
+            '';
+          }
+          {
+            plugin = lightline-vim;
+            config = ''
+              let g:lightline = {
+                  \ 'colorscheme': 'hydrangea',
+                  \ 'component': {
+                  \   'readonly': '%{&readonly?"":""}',
+                  \ },
+                  \ 'separator':    { 'left': '', 'right': '' },
+                  \ 'subseparator': { 'left': '', 'right': '' },
+                  \ }
+            '';
+          }
+          {
+            plugin = hydrangea-vim;
+            config = ''
+              set termguicolors
+              colorscheme hydrangea
+            '';
+          }
+          {
+            plugin = lsp_signature-nvim;
+            config = ''
+              lua << EOF
+                require "lsp_signature".on_attach()
+              EOF
             '';
           }
         ];
