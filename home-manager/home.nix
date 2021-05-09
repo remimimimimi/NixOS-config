@@ -226,7 +226,7 @@ in
               nnoremap <silent><leader>lh :Lspsaga lsp_finder<CR>
 
               " Code action
-              nnoremap <silent><leader>lca :Lspsaga code_action<CR>
+              nnoremap <silent><leader>la :Lspsaga code_action<CR>
 
               " Show signature help
               nnoremap <silent><leader>ls :Lspsaga signature_help<CR>
