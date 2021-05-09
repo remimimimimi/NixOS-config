@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 
+let
+  unstable = import <unstable> { config = { allowUnfree = true; }; };
+in
 {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -34,6 +37,7 @@
     package = pkgs.neovim-nightly;
 
     vimAlias = true;
+
 
     plugins = with pkgs.vimPlugins;
       let
@@ -76,6 +80,17 @@
             repo = "nvim-compe";
             rev = "efe3a6614e74c5eafec89e5b256ea514c5e1ea15";
             sha256 = "EAi8jXllmGJIjrIbsEcvMPhzNWJkfIUleVkmVBFcyQI=";
+            fetchSubmodules = true;
+          };
+        };
+        spaceline-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "spaceline-vim";
+          version = "master";
+          src = pkgs.fetchFromGitHub {
+            owner = "glepnir";
+            repo = "spaceline.vim";
+            rev = "94751d190a6912911c7789c1d5acb31a234bf22f";
+            sha256 = "a9iCnzVe31wWBrdk9OzC+xV4PtX47G0eAsdzlAFcwf8=";
             fetchSubmodules = true;
           };
         };
@@ -126,7 +141,7 @@
             config = ''
               nnoremap <silent> <leader>      :WhichKey '<leader>'<CR>
               nnoremap <silent> <localleader> :WhichKey '<localleader'CR>
-              nnoremap <silent> g             :WhichKey 'g'<CR>
+              "nnoremap <silent> g             :WhichKey 'g'<CR>
             '';
           }
           {
@@ -316,12 +331,25 @@
             '';
           }
           {
-            plugin = lightline-vim;
+            plugin = unstable.vimPlugins.nvim-web-devicons;
+          }
+          {
+            plugin = spaceline-vim;
+            config = ''
+              let g:spaceline_seperate_style = 'none'
+              let g:spaceline_colorscheme = 'nord'
+            '';
+          }
+          {
+            plugin = nord-vim;
+            config = ''
+              set termguicolors
+              colorscheme nord
+            '';
           }
         ];
 
     extraConfig = ''
-      colorscheme gruvbox
       let g:mapleader = ","
       nnoremap "," <Nop>
 
@@ -335,11 +363,12 @@
       inoremap jj <ESC>
 
       " Jump to start and end of line using the home row keys
-      nnoremap L '$'
-      nnoremap H '^'
+      nnoremap L $
+      nnoremap H ^
+
       " Neat X clipboard integration
       " ,p will paste clipboard into buffer
-      " ,c will copy entire buffer into clipboard
+      " ,y will copy entire buffer into clipboard
       noremap <leader>p :read !xsel --clipboard --output<cr>
       noremap <leader>y :w !xsel -ib<cr><cr>
 
