@@ -9,9 +9,20 @@ let
 in
 {
   # Allow unfree and unstable packages
-  nixpkgs.config = {
-    allowUnfree = true;
-    pulseaudio = true;
+  nixpkgs = {
+    # overlays = [
+    #   (
+    #     import (
+    #       builtins.fetchTarball {
+    #         url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+    #       }
+    #     )
+    #   )
+    # ];
+    config = {
+      allowUnfree = true;
+      pulseaudio = true;
+    };
   };
 
   nix = {
@@ -100,6 +111,12 @@ in
     shell = pkgs.zsh;
   };
 
+  fonts.fonts = with pkgs; [
+    (nerdfonts.override { fonts = [ "RobotoMono" ]; })
+    font-awesome
+    noto-fonts-emoji
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -125,9 +142,7 @@ in
     fd
     feh
     flameshot
-    font-awesome
     firefox
-    noto-fonts-emoji
     unstable.qutebrowser
     gcc
     git
