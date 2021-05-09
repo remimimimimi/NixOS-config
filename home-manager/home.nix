@@ -199,9 +199,6 @@ in
               -- }
               lspconfig.rnix.setup {}
               EOF
-              " Format on save
-              " let g:rustfmt_autosave = 1
-              autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
             '';
           }
           {
@@ -345,6 +342,14 @@ in
             config = ''
               set termguicolors
               colorscheme nord
+            '';
+          }
+          {
+            plugin = rust-vim;
+            config = ''
+              " Format on save
+              let g:rustfmt_autosave = 1
+              " autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
             '';
           }
         ];
