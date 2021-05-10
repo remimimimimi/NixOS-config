@@ -118,9 +118,13 @@ in
         };
       in
         [
-          {
-            plugin = vim-nix;
-          }
+          vim-vsnip
+          vim-surround
+          vim-caser
+          vim-polyglot
+          vim-toml
+          vim-nix
+          unstable.vimPlugins.nvim-web-devicons
           {
             plugin = easymotion;
             config = ''
@@ -159,21 +163,6 @@ in
               nnoremap <silent> <localleader> :WhichKey '<localleader'CR>
               " nnoremap <silent> g             :WhichKey 'g'<CR>
             '';
-          }
-          {
-            plugin = vim-vsnip;
-          }
-          {
-            plugin = vim-surround;
-          }
-          {
-            plugin = vim-caser;
-          }
-          {
-            plugin = vim-polyglot;
-          }
-          {
-            plugin = vim-toml;
           }
           {
             plugin = vim-indent-guides;
@@ -331,9 +320,6 @@ in
               vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
               EOF
             '';
-          }
-          {
-            plugin = unstable.vimPlugins.nvim-web-devicons;
           }
           {
             plugin = rust-vim;
