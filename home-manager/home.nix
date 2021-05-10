@@ -157,7 +157,7 @@ in
             config = ''
               nnoremap <silent> <leader>      :WhichKey '<leader>'<CR>
               nnoremap <silent> <localleader> :WhichKey '<localleader'CR>
-              nnoremap <silent> g             :WhichKey 'g'<CR>
+              " nnoremap <silent> g             :WhichKey 'g'<CR>
             '';
           }
           {
