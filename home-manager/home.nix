@@ -105,14 +105,14 @@ in
             fetchSubmodules = true;
           };
         };
-        lsp_signature-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
-          pname = "lsp_signature-nvim";
+        rust-tools-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "rust-tools-nvim";
           version = "master";
           src = pkgs.fetchFromGitHub {
-            owner = "ray-x";
-            repo = "lsp_signature-nvim";
-            rev = "de68e0754019f7ff5822f3180b067d89f014943b";
-            sha256 = "OWieUMaH4Pas/XUXwVe/lE15zli4iyg6Yzb1ogWMNAE=";
+            owner = "simrat39";
+            repo = "rust-tools.nvim";
+            rev = "2de94fc88d6382e5f0b61f1c619c8919fd45aea3";
+            sha256 = "TitmO3KtbIhIfndNdggr3SWJrWcPXavb/boLHzQGz5E=";
             fetchSubmodules = true;
           };
         };
@@ -128,9 +128,9 @@ in
           {
             plugin = easymotion;
             config = ''
-              " <leader>f{char} to move to {char}
-              map  <leader>f <Plug>(easymotion-bd-f)
-              nmap <leader>f <Plug>(easymotion-overwin-f)
+              " " <leader>f{char} to move to {char}
+              " map  <leader>f <Plug>(easymotion-bd-f)
+              " nmap <leader>f <Plug>(easymotion-overwin-f)
 
               " s{char}{char} to move to {char}{char}
               nmap s <Plug>(easymotion-overwin-f2)
@@ -175,21 +175,22 @@ in
             #plugin = vim-visual-multi;
           #}
           {
-            plugin = nvim-lspconfig;
+            plugin = unstable.vimPlugins.nvim-lspconfig;
             config = ''
               packadd! nvim-lspconfig
               lua << EOF
-              local lspconfig = require('nvim_lsp')
+              local lspconfig = require('lspconfig')
+              -- local lspconfig = require('nvim_lsp')
 
               local capabilities = vim.lsp.protocol.make_client_capabilities()
               capabilities.textDocument.completion.completionItem.snippetSupport = true
-              capabilities.textDocument.completion.completionItem.resolveSupport = {
-                properties = {
-                  'documentation',
-                  'detail',
-                  'additionalTextEdits',
-                }
-              }
+              -- capabilities.textDocument.completion.completionItem.resolveSupport = {
+              --   properties = {
+              --     'documentation',
+              --     'detail',
+              --     'additionalTextEdits',
+              --   }
+              -- }
 
               lspconfig.rust_analyzer.setup {
                 capabilities = capabilities,
@@ -205,15 +206,12 @@ in
               packadd! nvim-lsp-saga-master
               lua << EOF
               local saga = require('lspsaga')
-              saga.init_lsp_saga {}
-              -- require'lspsaga.diagnostic'.show_line_diagnostics()
-              -- saga.init_lsp_saga {
-              --   server_filetype_map = {
-              --     metals = {
-              --       'rs', "nix"
-              --     }
-              --   }
-              -- }
+              saga.init_lsp_saga {
+                error_sign = "",
+                warn_sign = "",
+                hint_sign = '',
+                infor_sign = '',
+              }
               EOF
 
 
@@ -223,7 +221,7 @@ in
               " Code action
               nnoremap <silent><leader>la :Lspsaga code_action<CR>
 
-              " Show signature help
+              " Show hover documentation
               nnoremap <silent>K :Lspsaga hover_doc<CR>
 
               " scroll down hover doc or scroll in definition preview
@@ -272,53 +270,19 @@ in
                   nvim_lua = true;
                   spell = true;
                   tags = true;
-                  snippets_nvim = false;
+                  snippets_nvim = true;
                   treesitter = false;
                 };
               }
 
-              local t = function(str)
-                return vim.api.nvim_replace_termcodes(str, true, true, true)
-              end
-
-              local check_back_space = function()
-                  local col = vim.fn.col('.') - 1
-                  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-                      return true
-                  else
-                      return false
-                  end
-              end
-
-              -- Use (s-)tab to:
-              --- move to prev/next item in completion menuone
-              --- jump to prev/next snippet's placeholder
-              _G.tab_complete = function()
-                if vim.fn.pumvisible() == 1 then
-                  return t "<C-n>"
-                elseif vim.fn.call("vsnip#available", {1}) == 1 then
-                  return t "<Plug>(vsnip-expand-or-jump)"
-                elseif check_back_space() then
-                  return t "<Tab>"
-                else
-                  return vim.fn['compe#complete']()
-                end
-              end
-              _G.s_tab_complete = function()
-                if vim.fn.pumvisible() == 1 then
-                  return t "<C-p>"
-                elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-                  return t "<Plug>(vsnip-jump-prev)"
-                else
-                  return t "<S-Tab>"
-                end
-              end
-
-              vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-              vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-              vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-              vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
               EOF
+              " Use <Tab> and <S-Tab> to navigate through popup menu
+              inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+              inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+              inoremap <silent><expr> <C-Space> compe#complete()
+              inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+              inoremap <silent><expr> <C-e>     compe#close('<C-e>')
             '';
           }
           {
@@ -358,13 +322,96 @@ in
             '';
           }
           {
-            plugin = lsp_signature-nvim;
+            plugin = rust-tools-nvim;
             config = ''
               lua << EOF
-                require "lsp_signature".on_attach()
+              local opts = {
+                  tools = { -- rust-tools options
+                      -- automatically set inlay hints (type hints)
+                      -- Therekis an issue due to which the hints are not applied on the first
+                      -- opened file. For now, write to the file to trigger a reapplication of
+                      -- the hints or just run :RustSetInlayHints.
+                      -- default: true
+                      autoSetHints = true,
+
+                      -- whether to show hover actions inside the hover window
+                      -- this overrides the default hover handler
+                      -- default: true
+                      hover_with_actions = true,
+
+                      runnables = {
+                          -- whether to use telescope for selection menu or not
+                          -- default: true
+                          -- use_telescope = true
+                          use_telescope = false
+
+                          -- rest of the opts are forwarded to telescope
+                      },
+
+                      inlay_hints = {
+                          -- wheter to show parameter hints with the inlay hints or not
+                          -- default: true
+                          show_parameter_hints = true,
+
+                          -- prefix for parameter hints
+                          -- default: "<-"
+                          parameter_hints_prefix = "<-",
+
+                          -- prefix for all the other hints (type, chaining)
+                          -- default: "=>"
+                          other_hints_prefix  = "=>",
+
+                          -- whether to align to the lenght of the longest line in the file
+                          max_len_align = false,
+
+                          -- padding from the left if max_len_align is true
+                          max_len_align_padding = 1,
+
+                          -- whether to align to the extreme right or not
+                          right_align = false,
+
+                          -- padding from the right if right_align is true
+                          right_align_padding = 7,
+                      },
+
+                      hover_actions = {
+                          -- the border that is used for the hover window
+                          -- see vim.api.nvim_open_win()
+                          border = {
+                            {"╭", "FloatBorder"},
+                            {"─", "FloatBorder"},
+                            {"╮", "FloatBorder"},
+                            {"│", "FloatBorder"},
+                            {"╯", "FloatBorder"},
+                            {"─", "FloatBorder"},
+                            {"╰", "FloatBorder"},
+                            {"│", "FloatBorder"}
+                          },
+                      }
+                  },
+
+                  -- all the opts to send to nvim-lspconfig
+                  -- these override the defaults set by rust-tools.nvim
+                  -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+                  server = {}, -- rust-analyer options
+              }
+
+              require('rust-tools').setup(opts)
               EOF
             '';
           }
+          # Broken in neovim HEAD
+          # {
+          #   plugin = unstable.vimPlugins.telescope-nvim;
+          #   config = ''
+          #     lua << EOF
+          #     EOF
+          #     nnoremap <leader>ff <cmd>Telescope find_files<cr>
+          #     nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+          #     nnoremap <leader>fb <cmd>Telescope buffers<cr>
+          #     nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+          #   '';
+          # }
         ];
 
     extraConfig = ''
@@ -381,8 +428,8 @@ in
       inoremap jj <ESC>
 
       " Jump to start and end of line using the home row keys
-      nnoremap L $
-      nnoremap H ^
+      nmap L $
+      nmap H ^
 
       " Neat X clipboard integration
       " ,p will paste clipboard into buffer
