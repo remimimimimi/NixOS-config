@@ -100,7 +100,7 @@
            fi
       }
 
-      export EDITOR="kak"
+      export EDITOR="nvim"
       export PAGER="bat"
       export MANPAGER="bat"
       export RUSTC_WRAPPER="sccache"
