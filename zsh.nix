@@ -100,7 +100,6 @@
            fi
       }
 
-      export BROWSER="firefox"
       export EDITOR="kak"
       export PAGER="bat"
       export MANPAGER="bat"

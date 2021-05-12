@@ -73,7 +73,7 @@ in
   services.xserver.videoDrivers = [ "nvidia" ];
 
   # Desktop manager
-  # services.xserver.windowManager.leftwm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.windowManager.i3.enable = true;
   services.xserver.windowManager.i3.package = pkgs.i3-gaps;
   services.xserver.windowManager.i3.extraPackages = with pkgs; [
