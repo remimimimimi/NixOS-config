@@ -115,6 +115,12 @@ in
     (nerdfonts.override { fonts = [ "RobotoMono" ]; })
     font-awesome
     noto-fonts-emoji
+    carlito
+    dejavu_fonts
+    ipafont
+    kochi-substitute
+    source-code-pro
+    ttf_bitstream_vera
   ];
 
   # List packages installed in system profile. To search, run:
@@ -173,6 +179,8 @@ in
     xclip
     xsel
     lua5_3
+    libreoffice-qt
+    emacs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

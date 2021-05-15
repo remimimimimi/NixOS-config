@@ -20,6 +20,7 @@
 
     shellAliases = {
       weather = "curl wttr.in";
+      j = "just";
 
       e = "kak";
       tsm = "transmission-remote";
