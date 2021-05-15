@@ -108,6 +108,7 @@
       # export GTK_THEME="Arc:dark"
       export PATH="$HOME/.cargo/bin:$PATH"
       export PATH="$HOME/.local/bin:$PATH"
+      export PATH="$HOME/.emacs.d/bin:$PATH"
     '';
   };
 }

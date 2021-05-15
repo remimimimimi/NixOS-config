@@ -180,7 +180,8 @@ in
     xsel
     lua5_3
     libreoffice-qt
-    emacs
+    ((emacsPackagesNgGen emacs).emacsWithPackages
+      (epkgs: [ epkgs.vterm ]))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
