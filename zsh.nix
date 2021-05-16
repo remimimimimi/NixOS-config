@@ -101,7 +101,7 @@
            fi
       }
 
-      export EDITOR="nvim"
+      export EDITOR="emacs -nw"
       export PAGER="bat"
       export MANPAGER="bat"
       export RUSTC_WRAPPER="sccache"

@@ -4,10 +4,8 @@
 
 { config, pkgs, ... }:
 
-let
-  unstable = import <unstable> { config = { allowUnfree = true; }; };
-in
-{
+let unstable = import <unstable> { config = { allowUnfree = true; }; };
+in {
   # Allow unfree and unstable packages
   nixpkgs = {
     # overlays = [
@@ -32,13 +30,11 @@ in
     '';
   };
 
-
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./zsh.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./zsh.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -66,6 +62,9 @@ in
     font = "Roboto-mono";
     keyMap = "us";
   };
+
+  i18n.inputMethod.enabled = "ibus";
+  i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [ libpinyin ];
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -105,7 +104,12 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remimimimi = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "docker"
+    ]; # Enable ‘sudo’ for the user.
     home = "/home/remimimimi";
     description = "Love low poly?";
     shell = pkgs.zsh;
@@ -180,8 +184,7 @@ in
     xsel
     lua5_3
     libreoffice-qt
-    ((emacsPackagesNgGen emacs).emacsWithPackages
-      (epkgs: [ epkgs.vterm ]))
+    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
