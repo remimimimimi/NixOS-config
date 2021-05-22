@@ -63,9 +63,6 @@ in {
     keyMap = "us";
   };
 
-  i18n.inputMethod.enabled = "ibus";
-  i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [ libpinyin ];
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.autorun = true;
@@ -85,6 +82,7 @@ in {
   services.xserver.layout = "us";
   services.xserver.autoRepeatDelay = 210;
   services.xserver.autoRepeatInterval = 40;
+  services.xserver.xkbOptions = "ctrl:swapcaps";
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -185,6 +183,7 @@ in {
     lua5_3
     libreoffice-qt
     ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]))
+    cdrkit
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
