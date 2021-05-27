@@ -8,15 +8,6 @@ let unstable = import <unstable> { config = { allowUnfree = true; }; };
 in {
   # Allow unfree and unstable packages
   nixpkgs = {
-    # overlays = [
-    #   (
-    #     import (
-    #       builtins.fetchTarball {
-    #         url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-    #       }
-    #     )
-    #   )
-    # ];
     config = {
       allowUnfree = true;
       pulseaudio = true;
@@ -74,7 +65,7 @@ in {
   services.xserver.windowManager.i3.package = pkgs.i3-gaps;
   services.xserver.windowManager.i3.extraPackages = with pkgs; [
     dmenu
-    i3status
+    unstable.i3status-rust
     i3lock
   ];
 
@@ -109,7 +100,7 @@ in {
       "docker"
     ]; # Enable ‘sudo’ for the user.
     home = "/home/remimimimi";
-    description = "Love low poly?";
+    description = "remimimimi";
     shell = pkgs.zsh;
   };
 
@@ -123,6 +114,15 @@ in {
     kochi-substitute
     source-code-pro
     ttf_bitstream_vera
+  ];
+
+  nixpkgs.overlays = [
+    (self: super: {
+      discord = super.discord.overrideAttrs (_: {
+        src = builtins.fetchTarball
+          "https://dl.discordapp.net/apps/linux/0.0.15/discord-0.0.15.tar.gz";
+      });
+    })
   ];
 
   # List packages installed in system profile. To search, run:
@@ -184,6 +184,11 @@ in {
     libreoffice-qt
     ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]))
     cdrkit
+    home-manager
+    unstable.element-desktop
+    tokei
+    direnv
+    rustup
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
