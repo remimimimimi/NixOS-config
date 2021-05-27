@@ -22,6 +22,8 @@ in
   # changes in each release.
   home.stateVersion = "21.03";
 
+  # home.file.".icons/default".source = "${pkgs.bibata-cursors}/share/icons/Vanilla-DMZ";
+
   nixpkgs.overlays = [
     (
       import (
