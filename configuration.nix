@@ -139,9 +139,6 @@ in {
     coreutils
     spotify
     discord
-    # (discord.override {
-    #   nss = pkgs.nss_3_63;
-    # })
     dmenu
     dunst
     deno
@@ -155,6 +152,7 @@ in {
     git
     gnumake
     gitAndTools.gh
+    gitAndTools.delta
     kakoune
     killall
     libpulseaudio
@@ -173,7 +171,7 @@ in {
     ripgrep
     sccache
     starship
-    tdesktop
+    unstable.tdesktop
     unstable.rust-analyzer
     unzip
     wget
@@ -189,6 +187,22 @@ in {
     tokei
     direnv
     rustup
+    unstable.qemu
+    unstable.mpv
+    unstable.youtube-dl
+    unstable.zig
+    unstable.zls
+    clang-tools
+    (python3.withPackages (ps:
+      with ps; [
+        pytest
+        nose
+        black
+        pyflakes
+        isort
+        cython
+        python-language-server
+      ]))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

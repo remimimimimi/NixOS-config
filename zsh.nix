@@ -68,7 +68,7 @@
       # Nix
       nsh = "nix-shell --command zsh";
       nia = "nix-env -iA";
-      nors = "sudo nixos-rebuild switch";
+      nors = "sudo cp ~/Git/myrepos/NixOS-config/*.nix /etc/nixos/; sudo nixos-rebuild switch";
       nd = "nix develop";
     };
 
@@ -104,11 +104,13 @@
       export EDITOR="emacs -nw"
       export PAGER="bat"
       export MANPAGER="bat"
-      export RUSTC_WRAPPER="sccache"
+      export RUSTC_WRAPPER=""
+      export RUSTC_WORKSPACE_WRAPPER="sccache"
       # export GTK_THEME="Arc:dark"
       export PATH="$HOME/.cargo/bin:$PATH"
       export PATH="$HOME/.local/bin:$PATH"
       export PATH="$HOME/.emacs.d/bin:$PATH"
+      export HELIX_RUNTIME="$HOME/.config/helix/runtime"
     '';
   };
 }
