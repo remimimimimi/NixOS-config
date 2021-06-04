@@ -22,7 +22,7 @@
       weather = "curl wttr.in";
       j = "just";
 
-      e = "kak";
+      e = "emacsclient";
       tsm = "transmission-remote";
       py = "python3";
       python = "python3";
@@ -101,7 +101,7 @@
            fi
       }
 
-      export EDITOR="emacs -nw"
+      export EDITOR="emacsclient"
       export PAGER="bat"
       export MANPAGER="bat"
       export RUSTC_WRAPPER=""

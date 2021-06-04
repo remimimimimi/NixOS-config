@@ -180,7 +180,7 @@ in {
     xsel
     lua5_3
     libreoffice-qt
-    ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]))
+    
     cdrkit
     home-manager
     unstable.element-desktop
@@ -193,16 +193,17 @@ in {
     unstable.zig
     unstable.zls
     clang-tools
-    (python3.withPackages (ps:
+    (unstable.python3.withPackages (ps:
       with ps; [
+        python-language-server
         pytest
         nose
         black
         pyflakes
         isort
         cython
-        python-language-server
       ]))
+    unstable.python-language-server
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -218,6 +219,12 @@ in {
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # Nix-shell caching
+  services.lorri.enable = true;
+
+  services.emacs.enable = true;
+  services.emacs.package = with unstable; ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]));
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -230,6 +237,6 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "21.05"; # Did you read the comment?
 
 }
