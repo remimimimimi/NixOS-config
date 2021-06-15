@@ -4,7 +4,16 @@
 
 { config, pkgs, ... }:
 
-let unstable = import <unstable> { config = { allowUnfree = true; }; };
+let
+  unstable = import <unstable> {
+    config = { allowUnfree = true; };
+    overlays = [
+      (import (builtins.fetchTarball {
+        url =
+          "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      }))
+    ];
+  };
 in {
   # Allow unfree and unstable packages
   nixpkgs = {
@@ -12,6 +21,14 @@ in {
       allowUnfree = true;
       pulseaudio = true;
     };
+    overlays = [
+      (self: super: {
+        discord = super.discord.overrideAttrs (_: {
+          src = builtins.fetchTarball
+            "https://dl.discordapp.net/apps/linux/0.0.15/discord-0.0.15.tar.gz";
+        });
+      })
+    ];
   };
 
   nix = {
@@ -25,13 +42,14 @@ in {
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./zsh.nix
+    ./cachix.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "Remimimimi"; # Define your hostname.
+  networking.hostName = "Remimimimi";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
@@ -43,10 +61,6 @@ in {
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -54,26 +68,45 @@ in {
     keyMap = "us";
   };
 
-  # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.autorun = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-  # Desktop manager
-  services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.i3.package = pkgs.i3-gaps;
-  services.xserver.windowManager.i3.extraPackages = with pkgs; [
-    dmenu
-    unstable.i3status-rust
-    i3lock
-  ];
-
-  # Configure keyboard settings in X11
+  services.xserver.videoDrivers = [ "nouveau" ];
   services.xserver.layout = "us";
   services.xserver.autoRepeatDelay = 210;
   services.xserver.autoRepeatInterval = 40;
-  services.xserver.xkbOptions = "ctrl:swapcaps";
+  services.xserver.libinput.enable = true;
+  # services.xserver.xkbOptions = "ctrl:swapcaps";
+
+  # Desktop manager
+  services.xserver.desktopManager.plasma5.enable = true;
+  # services.xserver.windowManager.i3.enable = true;
+  # services.xserver.windowManager.i3.package = pkgs.i3-gaps;
+  # services.xserver.windowManager.i3.extraPackages = with pkgs; [
+  #   dmenu
+  #   unstable.i3status-rust
+  #   i3lock
+  # ];
+  # services.xserver.displayManager.lightdm.enable = true;
+
+  programs.sway.enable = true;
+  programs.sway.wrapperFeatures.gtk = true;
+  programs.sway.extraPackages = with unstable; [
+    wofi
+    i3status-rust
+    swaylock
+    sway-contrib.grimshot
+    mako
+    wl-clipboard
+  ];
+  programs.sway.extraSessionCommands = ''
+    export SDL_VIDEODRIVER=wayland
+    export QT_QPA_PLATFORM=wayland
+    export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+    export _JAVA_AWT_WM_NONREPARENTING=1
+    export MOZ_ENABLE_WAYLAND=1
+    export WLR_DRM_NO_MODIFIERS=1
+  '';
+
+  hardware.opengl.enable = true;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -88,7 +121,6 @@ in {
   virtualisation.docker.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remimimimi = {
@@ -116,83 +148,72 @@ in {
     ttf_bitstream_vera
   ];
 
-  nixpkgs.overlays = [
-    (self: super: {
-      discord = super.discord.overrideAttrs (_: {
-        src = builtins.fetchTarball
-          "https://dl.discordapp.net/apps/linux/0.0.15/discord-0.0.15.tar.gz";
-      });
-    })
-  ];
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with unstable; [
     arc-icon-theme
     arc-theme
     bat
-    binutils
     bibata-cursors
-    crate2nix
+    binutils
+    cdrkit
     clang
+    clang-tools
     cmake
     coreutils
-    spotify
+    crate2nix
+    deno
+    direnv
     discord
     dmenu
     dunst
-    deno
+    element-desktop
     exa
     fd
     feh
-    flameshot
     firefox
-    unstable.qutebrowser
+    flameshot
     gcc
     git
-    gnumake
-    gitAndTools.gh
     gitAndTools.delta
+    gitAndTools.gh
+    gnumake
+    home-manager
+    just
     kakoune
     killall
     libpulseaudio
+    libreoffice-qt
     libtool
     links2
-    just
+    lua5_3
+    mpv
     neofetch
     nixfmt
+    nyxt
     openssh
     openssl
     papirus-icon-theme
     pass
-    rnix-lsp
-    roboto-mono
+    qemu
+    qutebrowser
     ranger
     ripgrep
+    rnix-lsp
+    roboto-mono
+    rust-analyzer
+    rustup
     sccache
+    spotify
     starship
-    unstable.tdesktop
-    unstable.rust-analyzer
+    tdesktop
+    tokei
     unzip
     wget
     wmctrl
     xclip
     xsel
-    lua5_3
-    libreoffice-qt
-    
-    cdrkit
-    home-manager
-    unstable.element-desktop
-    tokei
-    direnv
-    rustup
-    unstable.qemu
-    unstable.mpv
-    unstable.youtube-dl
-    unstable.zig
-    unstable.zls
-    clang-tools
+    youtube-dl
     (unstable.python3.withPackages (ps:
       with ps; [
         python-language-server
@@ -203,33 +224,15 @@ in {
         isort
         cython
       ]))
-    unstable.python-language-server
+    python-language-server
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Nix-shell caching
-  services.lorri.enable = true;
-
   services.emacs.enable = true;
-  services.emacs.package = with unstable; ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]));
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  services.emacs.package = with unstable;
+    ((emacsPackagesNgGen emacsGcc).emacsWithPackages (epkgs: [ epkgs.vterm ]));
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
