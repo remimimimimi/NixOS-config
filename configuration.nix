@@ -21,14 +21,14 @@ in {
       allowUnfree = true;
       pulseaudio = true;
     };
-    overlays = [
-      (self: super: {
-        discord = super.discord.overrideAttrs (_: {
-          src = builtins.fetchTarball
-            "https://dl.discordapp.net/apps/linux/0.0.15/discord-0.0.15.tar.gz";
-        });
-      })
-    ];
+    # overlays = [
+    #   (self: super: {
+    #     discord = super.discord.overrideAttrs (_: {
+    #       src = builtins.fetchTarball
+    #         "https://dl.discordapp.net/apps/linux/0.0.15/discord-0.0.15.tar.gz";
+    #     });
+    #   })
+    # ];
   };
 
   nix = {
@@ -68,45 +68,22 @@ in {
     keyMap = "us";
   };
 
-  services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "nouveau" ];
-  services.xserver.layout = "us";
-  services.xserver.autoRepeatDelay = 210;
-  services.xserver.autoRepeatInterval = 40;
-  services.xserver.libinput.enable = true;
-  # services.xserver.xkbOptions = "ctrl:swapcaps";
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "nvidia" ];
+    layout = "us";
+    autoRepeatDelay = 210;
+    autoRepeatInterval = 40;
+
+    desktopManager.plasma5.enable = true;
+    windowManager.bspwm = {
+      enable = true;
+      configFile = "/home/remimimimi/.config/bspwm/bspwmrc";
+      sxhkd.configFile = "/home/remimimimi/.config/sxhkd/sxhkdrc";
+    };
+  };
 
   # Desktop manager
-  services.xserver.desktopManager.plasma5.enable = true;
-  # services.xserver.windowManager.i3.enable = true;
-  # services.xserver.windowManager.i3.package = pkgs.i3-gaps;
-  # services.xserver.windowManager.i3.extraPackages = with pkgs; [
-  #   dmenu
-  #   unstable.i3status-rust
-  #   i3lock
-  # ];
-  # services.xserver.displayManager.lightdm.enable = true;
-
-  programs.sway.enable = true;
-  programs.sway.wrapperFeatures.gtk = true;
-  programs.sway.extraPackages = with unstable; [
-    wofi
-    i3status-rust
-    swaylock
-    sway-contrib.grimshot
-    mako
-    wl-clipboard
-  ];
-  programs.sway.extraSessionCommands = ''
-    export SDL_VIDEODRIVER=wayland
-    export QT_QPA_PLATFORM=wayland
-    export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-    export _JAVA_AWT_WM_NONREPARENTING=1
-    export MOZ_ENABLE_WAYLAND=1
-    export WLR_DRM_NO_MODIFIERS=1
-  '';
-
-  hardware.opengl.enable = true;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -114,13 +91,10 @@ in {
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
-
   hardware.enableAllFirmware = true;
 
   # Setup docker
   virtualisation.docker.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remimimimi = {
@@ -148,8 +122,6 @@ in {
     ttf_bitstream_vera
   ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with unstable; [
     arc-icon-theme
     arc-theme
@@ -178,7 +150,6 @@ in {
     gitAndTools.delta
     gitAndTools.gh
     gnumake
-    home-manager
     just
     kakoune
     killall
@@ -186,11 +157,9 @@ in {
     libreoffice-qt
     libtool
     links2
-    lua5_3
     mpv
     neofetch
     nixfmt
-    nyxt
     openssh
     openssl
     papirus-icon-theme
@@ -210,21 +179,17 @@ in {
     tokei
     unzip
     wget
-    wmctrl
     xclip
     xsel
     youtube-dl
-    (unstable.python3.withPackages (ps:
-      with ps; [
-        python-language-server
-        pytest
-        nose
-        black
-        pyflakes
-        isort
-        cython
-      ]))
+    (unstable.python3.withPackages
+      (ps: with ps; [ pytest nose black pyflakes isort cython jedi ]))
     python-language-server
+    unstable.nodePackages.pyright
+    unstable.poetry
+    unstable.pipenv
+    unstable.radare2
+    polybarFull
   ];
 
   # Enable the OpenSSH daemon.
