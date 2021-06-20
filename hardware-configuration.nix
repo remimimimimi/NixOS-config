@@ -4,32 +4,30 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  
+
   # CPU
   nix.maxJobs = lib.mkDefault 8;
   powerManagement.cpuFreqGovernor = "performance";
   hardware.cpu.intel.updateMicrocode = true;
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/424f853d-057e-4893-a559-01820438aa92";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/424f853d-057e-4893-a559-01820438aa92";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/C1A4-7E81";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/C1A4-7E81";
+    fsType = "vfat";
+  };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/cc7543ba-bac0-41d8-a398-588f8272d76f"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/cc7543ba-bac0-41d8-a398-588f8272d76f"; }];
 
 }

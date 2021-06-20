@@ -8,15 +8,11 @@
       customPkgs = [ pkgs.nix-zsh-completions ];
     };
 
-    syntaxHighlighting = {
-      enable = true;
-    };
+    syntaxHighlighting = { enable = true; };
 
     enableCompletion = true;
 
-    autosuggestions = {
-      enable = true;
-    };
+    autosuggestions = { enable = true; };
 
     shellAliases = {
       weather = "curl wttr.in";
@@ -62,14 +58,16 @@
       d = "git diff";
 
       # pulse audio
-      hearvoice = "pactl load-module module-loopback adjust_time=0 latency_msec=1 >> /dev/null";
+      hearvoice =
+        "pactl load-module module-loopback adjust_time=0 latency_msec=1 >> /dev/null";
       unhearvoice = "pactl unload-module module-loopback";
 
       # Nix
       nsh = "nix-shell --command zsh";
       nia = "nix-env -iA";
       nors = "sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
-      cnors = "sudo cp ~/Git/myrepos/NixOS-config/*.nix /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
+      cnors =
+        "sudo cp -r ~/Projects/myrepos/NixOS-config/* /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
       nd = "nix develop";
     };
 

@@ -8,20 +8,17 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # Extra
-    emacs-overlay.url  = "github:nix-community/emacs-overlay";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
-  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, ... }: 
-  let
-    userName = "remimimimi";
-    system = "x86_64-linux";
-  in
-  {
-    nixosConfigurations.${userName} = nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [ 
-        ./configuration.nix
-      ];
-      specialArgs = { inherit system inputs; };
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
+    let
+      userName = "remimimimi";
+      system = "x86_64-linux";
+    in {
+      nixosConfigurations.${userName} = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [ ./configuration.nix ];
+        specialArgs = { inherit system inputs; };
+      };
     };
-  };
 }
