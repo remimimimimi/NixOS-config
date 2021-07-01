@@ -67,12 +67,13 @@
       nia = "nix-env -iA";
       nors = "sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
       cnors =
-        "sudo cp -r ~/Projects/myrepos/NixOS-config/* /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
+        "sudo cp -rf ~/Projects/myrepos/NixOS-config/* /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
       nd = "nix develop";
     };
 
     promptInit = ''
       eval "$(starship init zsh)"
+      eval "$(direnv hook zsh)"
     '';
 
     shellInit = ''
@@ -109,6 +110,7 @@
       export PATH="$HOME/.local/bin:$PATH"
       export PATH="$HOME/.local/bin/v:$PATH"
       export PATH="$HOME/.emacs.d/bin:$PATH"
+
     '';
   };
 }

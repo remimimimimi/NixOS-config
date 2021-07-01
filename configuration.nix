@@ -5,16 +5,12 @@
 { config, pkgs, lib, system, inputs, ... }:
 
 let
-  pkgs-unstable = import inputs.nixpkgs { 
-    inherit system; 
-    config.allowUnfree = true; 
+  pkgs-unstable = import inputs.nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
   };
 in {
-  imports = [
-    ./hardware-configuration.nix
-    ./cachix.nix
-    ./zsh.nix
-  ];
+  imports = [ ./hardware-configuration.nix ./cachix.nix ./zsh.nix ];
 
   nix = {
     package = pkgs.nixUnstable;
@@ -22,13 +18,14 @@ in {
       experimental-features = nix-command flakes
     '';
   };
-  nixpkgs.overlays = [ 
+  nixpkgs.overlays = [
     (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
-      sha256 = "07phd0pp6pypsdm1nqsl38ld4ccxrmshb0yksxrk5vhiblwyqxsa";
-    })) 
+      url =
+        "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      sha256 = "0kwkilg33rl3pfqnl2g6bsam03f8byf06a3y86hk1fsblk48d4d4";
+    }))
   ];
-  nixpkgs.config.allowUnfree = true; 
+  nixpkgs.config.allowUnfree = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -57,7 +54,7 @@ in {
     keyMap = "us";
   };
 
-    # Enable the X11 windowing system.
+  # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.autorun = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -78,7 +75,6 @@ in {
   services.xserver.autoRepeatDelay = 210;
   services.xserver.autoRepeatInterval = 40;
   services.xserver.xkbOptions = "ctrl:swapcaps";
-  
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -96,7 +92,12 @@ in {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remimimimi = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "docker"
+    ]; # Enable ‘sudo’ for the user.
     home = "/home/remimimimi";
     description = "remimimimi";
     shell = pkgs.zsh;
@@ -165,6 +166,7 @@ in {
     qemu
     qutebrowser
     ranger
+    radare2
     ripgrep
     rnix-lsp
     roboto-mono
@@ -175,6 +177,7 @@ in {
     starship
     tdesktop
     tokei
+    tinycc
     unzip
     wget
     wget
@@ -193,6 +196,10 @@ in {
         cython
       ]))
     python-language-server
+    (vscode-with-extensions.override {
+      vscodeExtensions =
+        (with vscode-extensions; [ ms-vsliveshare ms-vscode-remote ]);
+    })
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -210,7 +217,9 @@ in {
 
   # Emacs as daemon
   services.emacs.enable = true;
-  services.emacs.package = (pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages (epkgs: [ epkgs.vterm ]);
+  services.emacs.package =
+    (pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages
+    (epkgs: [ epkgs.vterm ]);
   #services.emacs.package = ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]));
 
   # Open ports in the firewall.
