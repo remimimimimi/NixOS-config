@@ -10,14 +10,25 @@
     # Extra
     emacs-overlay.url = "github:nix-community/emacs-overlay";
   };
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
       userName = "remimimimi";
       system = "x86_64-linux";
     in {
       nixosConfigurations.${userName} = nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [ ./configuration.nix ];
+        modules = [ 
+		  ./configuration.nix 
+		  home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${userName} = import ./home.nix {
+              inherit inputs system;
+              pkgs = import nixpkgs { inherit system; };
+            };
+          }
+		];
         specialArgs = { inherit system inputs; };
       };
     };

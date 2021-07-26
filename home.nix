@@ -1,17 +1,8 @@
-{ config, pkgs, emacs-overlay, ... }:
+{ pkgs, inputs, system, ... }:
 {
   home.packages = [
     pkgs.htop
   ];
-  nixpkgs.overlays = [ emacs-overlay.overlay ];
-
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacsPgtkGcc;
-  };
-  # Doom emacs config
-  xdg.configFile."doom/config.el".source = ''
-  '';
 
   programs.alacritty = {
     enable = true;
