@@ -9,6 +9,10 @@ let
     inherit system;
     config.allowUnfree = true;
   };
+  pkgs-on-the-edge = import inputs.nixpkgs-unstable {
+    inherit system;
+    config.allowUnfree = true;
+  };
 in {
   imports = [ ./hardware-configuration.nix ./cachix.nix ./zsh.nix ];
 
@@ -157,7 +161,7 @@ in {
     lua5_3
     mpv
     neofetch
-    neovim
+    pkgs-on-the-edge.neovim
     nixfmt
     openssh
     openssl
@@ -175,8 +179,8 @@ in {
     sccache
     spotify
     starship
-    tdesktop
-    tokei
+    pkgs-on-the-edge.tdesktop
+    scc
     tinycc
     unzip
     wget
@@ -187,7 +191,6 @@ in {
     youtube-dl
     (python3.withPackages (ps:
       with ps; [
-        python-language-server
         pytest
         nose
         black
