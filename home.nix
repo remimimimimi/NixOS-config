@@ -1,8 +1,8 @@
 { pkgs, inputs, system, ... }:
 {
-  home.packages = [
-    pkgs.htop
-  ];
+  # home.packages = [
+  #   # pkgs.htop
+  # ];
 
   programs.alacritty = {
     enable = true;
@@ -54,6 +54,7 @@
           cyan =    "0x00ffff";
           white =   "0xd0d0d0";
         };
+
         # Bright colors
         bright = {
           black =   "0x808080";

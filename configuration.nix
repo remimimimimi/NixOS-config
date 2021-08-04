@@ -108,7 +108,7 @@ in {
   };
 
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "RobotoMono" ]; })
+    (nerdfonts.override { fonts = [ "Iosevka" ]; })
     font-awesome
     noto-fonts-emoji
     carlito
@@ -120,7 +120,8 @@ in {
   ];
 
   environment.systemPackages = with pkgs-unstable; [
-    alacritty
+    # alacritty
+    wezterm
     arc-icon-theme
     arc-theme
     bat
@@ -203,6 +204,7 @@ in {
       vscodeExtensions =
         (with vscode-extensions; [ ms-vsliveshare ms-vscode-remote ]);
     })
+    tree-sitter
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
