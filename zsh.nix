@@ -105,12 +105,13 @@
       export MANPAGER="bat"
       export RUSTC_WRAPPER=""
       export RUSTC_WORKSPACE_WRAPPER="sccache"
-      # export GTK_THEME="Arc:dark"
+      export GTK_THEME="Arc:dark"
       export PATH="$HOME/.cargo/bin:$PATH"
       export PATH="$HOME/.local/bin:$PATH"
       export PATH="$HOME/.local/bin/v:$PATH"
       export PATH="$HOME/.emacs.d/bin:$PATH"
 
+      export COQPATH=$HOME/.nix-profile/lib/coq/8.7/user-contrib
     '';
   };
 }

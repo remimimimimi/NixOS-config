@@ -58,6 +58,9 @@ in {
     keyMap = "us";
   };
 
+  # Flatpack setup
+  services.flatpak.enable = true;
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.autorun = true;
@@ -90,6 +93,7 @@ in {
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  hardware.opengl.driSupport32Bit = true;
 
   virtualisation.docker.enable = true;
 
@@ -107,17 +111,14 @@ in {
     shell = pkgs.zsh;
   };
 
-  fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "Iosevka" ]; })
-    font-awesome
-    noto-fonts-emoji
-    carlito
-    dejavu_fonts
-    ipafont
-    kochi-substitute
-    source-code-pro
-    ttf_bitstream_vera
-  ];
+  fonts = {
+      fonts = with pkgs; [
+        (nerdfonts.override { fonts = [ "Iosevka" ]; })
+        terminus_font
+        corefonts
+        noto-fonts
+      ];
+  };
 
   environment.systemPackages = with pkgs-unstable; [
     # alacritty
@@ -134,6 +135,7 @@ in {
     cmake
     coreutils
     crate2nix
+    coq
     deno
     direnv
     discord
@@ -144,7 +146,7 @@ in {
     fd
     fd
     feh
-    firefox-devedition-bin
+    vivaldi
     flameshot
     gcc
     git
@@ -205,6 +207,7 @@ in {
         (with vscode-extensions; [ ms-vsliveshare ms-vscode-remote ]);
     })
     tree-sitter
+    wineWowPackages.stable
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
