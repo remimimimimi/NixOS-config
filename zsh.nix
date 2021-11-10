@@ -67,7 +67,7 @@
       nia = "nix-env -iA";
       nors = "sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
       cnors =
-        "sudo cp -rf ~/Projects/myrepos/NixOS-config/* /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
+        "sudo cp -rf ~/Projects/myrepos/NixOS-config/* /etc/nixos/ && sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
       nd = "nix develop";
     };
 
