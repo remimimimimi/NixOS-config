@@ -14,7 +14,7 @@ let
     config.allowUnfree = true;
   };
 in {
-  imports = [ ./hardware-configuration.nix ./cachix.nix ./zsh.nix ];
+  imports = [ ./hardware-configuration.nix ./zsh.nix ];
 
   nix = {
     package = pkgs.nixUnstable;
@@ -22,13 +22,13 @@ in {
       experimental-features = nix-command flakes
     '';
   };
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url =
-        "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-      sha256 = "0kwkilg33rl3pfqnl2g6bsam03f8byf06a3y86hk1fsblk48d4d4";
-    }))
-  ];
+  #nixpkgs.overlays = [
+  #  (import (builtins.fetchTarball {
+  #    url =
+  #      "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+  #    sha256 = "0kwkilg33rl3pfqnl2g6bsam03f8byf06a3y86hk1fsblk48d4d4";
+  #  }))
+  #];
   nixpkgs.config.allowUnfree = true;
 
   # Use the systemd-boot EFI boot loader.
@@ -45,7 +45,7 @@ in {
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp3s0.useDHCP = true;
+  networking.interfaces.enp2s0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -64,13 +64,16 @@ in {
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.autorun = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Desktop manager
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.windowManager.xmonad.enable = true;
+  services.xserver.windowManager.xmonad.extraPackages = haskellPackages: [
+    haskellPackages.xmobar
+    haskellPackages.xmonad-contrib
+  ];
   services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.i3.package = pkgs.i3-gaps;
   services.xserver.windowManager.i3.extraPackages = with pkgs; [
     dmenu
     i3status-rust
@@ -121,32 +124,25 @@ in {
   };
 
   environment.systemPackages = with pkgs-unstable; [
-    # alacritty
     wezterm
     arc-icon-theme
     arc-theme
     bat
     bibata-cursors
     binutils
-    cached-nix-shell
-    cdrkit
     clang
     clang-tools
     cmake
     coreutils
     crate2nix
-    coq
-    deno
     direnv
     discord
     dmenu
     dunst
-    element-desktop
     exa
     fd
-    fd
     feh
-    vivaldi
+    firefox-devedition-bin
     flameshot
     gcc
     git
@@ -154,24 +150,20 @@ in {
     gitAndTools.gh
     gnumake
     home-manager
-    just
-    kakoune
     killall
     libpulseaudio
     libreoffice-qt
     libtool
     links2
-    lua5_3
     mpv
     neofetch
-    pkgs-on-the-edge.neovim
+    neovim
     nixfmt
     openssh
     openssl
     papirus-icon-theme
     pass
     qemu
-    qutebrowser
     ranger
     radare2
     ripgrep
@@ -181,16 +173,17 @@ in {
     rustup
     sccache
     spotify
+    ncspot
     starship
-    pkgs-on-the-edge.tdesktop
+    tdesktop
     scc
     tinycc
     unzip
     wget
-    wget
     wmctrl
     xclip
     xsel
+    xmobar
     youtube-dl
     (python3.withPackages (ps:
       with ps; [
@@ -224,10 +217,10 @@ in {
   services.openssh.enable = true;
 
   # Emacs as daemon
-  services.emacs.enable = true;
-  services.emacs.package =
-    (pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages
-    (epkgs: [ epkgs.vterm ]);
+  #services.emacs.enable = true;
+  #services.emacs.package =
+  #  (pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages
+  #  (epkgs: [ epkgs.vterm ]);
   #services.emacs.package = ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]));
 
   # Open ports in the firewall.
@@ -242,6 +235,6 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "21.05"; # Did you read the comment?
+  system.stateVersion = "21.11"; # Did you read the comment?
 }
 

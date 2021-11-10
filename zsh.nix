@@ -111,7 +111,7 @@
       export PATH="$HOME/.local/bin/v:$PATH"
       export PATH="$HOME/.emacs.d/bin:$PATH"
 
-      export COQPATH=$HOME/.nix-profile/lib/coq/8.7/user-contrib
+      #export COQPATH=$HOME/.nix-profile/lib/coq/8.7/user-contrib
     '';
   };
 }
