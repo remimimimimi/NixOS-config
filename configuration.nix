@@ -168,6 +168,7 @@ in {
     openssl
     papirus-icon-theme
     pass
+    plover
     qemu
     ranger
     radare2
