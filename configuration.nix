@@ -22,18 +22,21 @@ in {
       experimental-features = nix-command flakes
     '';
   };
-  #nixpkgs.overlays = [
-  #  (import (builtins.fetchTarball {
-  #    url =
-  #      "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-  #    sha256 = "0kwkilg33rl3pfqnl2g6bsam03f8byf06a3y86hk1fsblk48d4d4";
-  #  }))
-  #];
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url =
+        "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      sha256 = "04f58mwvz7pn4z8hxvbxbgzb6cjn360707zd14rvv3zsry58dsgd";
+    }))
+  ];
   nixpkgs.config.allowUnfree = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Change kernel version
+  boot.kernelPackages = pkgs.linuxPackages_5_4;
 
   networking.hostName = "sdm"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -45,7 +48,7 @@ in {
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp2s0.useDHCP = true;
+  networking.interfaces.enp3s0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -64,6 +67,7 @@ in {
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.autorun = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Desktop manager
   services.xserver.displayManager.sddm.enable = true;
@@ -130,6 +134,7 @@ in {
     bat
     bibata-cursors
     binutils
+    blender
     clang
     clang-tools
     cmake
@@ -217,10 +222,10 @@ in {
   services.openssh.enable = true;
 
   # Emacs as daemon
-  #services.emacs.enable = true;
-  #services.emacs.package =
-  #  (pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages
-  #  (epkgs: [ epkgs.vterm ]);
+  services.emacs.enable = true;
+  services.emacs.package =
+    (pkgs.emacsPackagesGen pkgs.emacsPgtkGcc).emacsWithPackages
+    (epkgs: [ epkgs.vterm ]);
   #services.emacs.package = ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [ epkgs.vterm ]));
 
   # Open ports in the firewall.
