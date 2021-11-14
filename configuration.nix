@@ -119,12 +119,12 @@ in {
   };
 
   fonts = {
-      fonts = with pkgs; [
-        (nerdfonts.override { fonts = [ "Iosevka" ]; })
-        terminus_font
-        corefonts
-        noto-fonts
-      ];
+    fonts = with pkgs; [
+      (nerdfonts.override { fonts = [ "Iosevka" ]; })
+      terminus_font
+      corefonts
+      noto-fonts
+    ];
   };
 
   environment.systemPackages = with pkgs-unstable; [
@@ -149,11 +149,13 @@ in {
     feh
     firefox-devedition-bin
     flameshot
+    pkgs-on-the-edge.fstar
     gcc
     git
     gitAndTools.delta
     gitAndTools.gh
     gnumake
+    guile
     home-manager
     killall
     libpulseaudio
@@ -168,7 +170,7 @@ in {
     openssl
     papirus-icon-theme
     pass
-    plover
+    plover.dev
     qemu
     ranger
     radare2
@@ -191,22 +193,33 @@ in {
     xsel
     xmobar
     youtube-dl
-    (python3.withPackages (ps:
-      with ps; [
-        pytest
-        nose
-        black
-        pyflakes
-        isort
-        cython
-      ]))
-    python-language-server
+    pyright
+    (python3.withPackages
+      (ps: with ps; [ pytest nose black bpython pyflakes isort cython ]))
     (vscode-with-extensions.override {
       vscodeExtensions =
         (with vscode-extensions; [ ms-vsliveshare ms-vscode-remote ]);
     })
     tree-sitter
     wineWowPackages.stable
+    qbittorrent
+    pkgs-on-the-edge.vlang
+    # (pkgs-on-the-edge.vlang.override (old: rec {
+    #   version = "weekly.2021.45";
+    #   # vc = pkgs.fetchFromGithub {
+    #   #   owner = "vlang";
+    #   #   repo = "vc";
+    #   #   rev = "0307083082d3391f2bb225a2b97fd1adbb193e4f";
+    #   #   sha256 = "0xzkjdph5wfjr3qfkihgc27vsbbjh2l31rp8z2avq9hc531hwvrz";
+    #   # };
+    #   # src = pkgs.fetchFromGitHub {
+    #   #   owner = "vlang";
+    #   #   repo = "v";
+    #   #   rev = "weekly.2021.45";
+    #   #   # rev = version;
+    #   #   sha256 = "0y4a5rmpcdqina32d6azbmsbi3zqqfl413sicg72x6a1pm2vg33j";
+    #   # };
+    # }))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
