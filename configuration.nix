@@ -103,6 +103,8 @@ in {
   hardware.opengl.driSupport32Bit = true;
 
   virtualisation.docker.enable = true;
+  virtualisation.libvirtd.enable = true;
+  programs.dconf.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.remimimimi = {
@@ -112,6 +114,7 @@ in {
       "networkmanager"
       "video"
       "docker"
+      "libvirtd"
     ]; # Enable ‘sudo’ for the user.
     home = "/home/remimimimi";
     description = "remimimimi";
@@ -126,6 +129,8 @@ in {
       noto-fonts
     ];
   };
+
+  services.teamviewer.enable = true;
 
   environment.systemPackages = with pkgs-unstable; [
     wezterm
@@ -204,6 +209,8 @@ in {
     wineWowPackages.stable
     qbittorrent
     pkgs-on-the-edge.vlang
+    virt-manager
+    teamviewer
     # (pkgs-on-the-edge.vlang.override (old: rec {
     #   version = "weekly.2021.45";
     #   # vc = pkgs.fetchFromGithub {
