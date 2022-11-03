@@ -16,24 +16,18 @@
 
     shellAliases = {
       weather = "curl wttr.in";
-      j = "just";
 
       e = "emacsclient";
       tsm = "transmission-remote";
       py = "python3";
       python = "python3";
-      sr = "sr -browser=qutebrowser";
-      srg = "sr -browser=qutebrowser google ";
       cat = "bat --paging=never";
-      tt = "taskwarrior-tui";
 
       ls = "exa";
       ll = "exa -l";
       la = "exa -la";
 
       # Rust aliases
-      stable = "rustup default stable";
-      nightly = "rustup default nightly";
       cr = "cargo run";
       crr = "cargo run --release";
       cb = "cargo build";
@@ -42,11 +36,6 @@
       cch = "cargo check";
       ccl = "cargo clean";
       cx = "cargo xtask";
-
-      # Zig aliases
-      zr = "zig run";
-      zbr = "zig build run";
-      zb = "zig build";
 
       # git alias
       s = "git status";
@@ -64,10 +53,8 @@
 
       # Nix
       nsh = "nix-shell --command zsh";
-      nia = "nix-env -iA";
-      nors = "sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
-      cnors =
-        "sudo cp -rf ~/Projects/myrepos/NixOS-config/* /etc/nixos/ && sudo nixos-rebuild switch --flake /etc/nixos#remimimimi";
+      nors =
+        "sudo nixos-rebuild switch --flake /home/remimimimimi/Projects/Mine/NixOS-config#remimimimimi"; # TODO
       nd = "nix develop";
     };
 
@@ -103,15 +90,12 @@
       export EDITOR="emacsclient"
       export PAGER="bat"
       export MANPAGER="bat"
-      export RUSTC_WRAPPER=""
-      export RUSTC_WORKSPACE_WRAPPER="sccache"
-      export GTK_THEME="Arc:dark"
+      # export RUSTC_WRAPPER=""
+      # export RUSTC_WORKSPACE_WRAPPER="sccache"
+      # export GTK_THEME="Arc:dark"
       export PATH="$HOME/.cargo/bin:$PATH"
       export PATH="$HOME/.local/bin:$PATH"
-      export PATH="$HOME/.local/bin/v:$PATH"
       export PATH="$HOME/.emacs.d/bin:$PATH"
-
-      #export COQPATH=$HOME/.nix-profile/lib/coq/8.7/user-contrib
     '';
   };
 }

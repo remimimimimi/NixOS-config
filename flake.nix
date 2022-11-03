@@ -1,35 +1,46 @@
 {
-  description = "Flake-driven nixos config";
+  description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-unstable.url = "nixpkgs/master";
-    home-manager.url = "github:rycee/home-manager/master";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Extra
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-gaming.url = "github:fufexan/nix-gaming";
+
+    guix-overlay.url = "github:foo-dogsquared/nix-overlay-guix";
   };
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
-    let
-      userName = "remimimimi";
-      system = "x86_64-linux";
-    in {
-      nixosConfigurations.${userName} = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [ 
-		  ./configuration.nix 
-		  home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${userName} = import ./home.nix {
-              inherit inputs system;
-              pkgs = import nixpkgs { inherit system; };
-            };
-          }
-		];
-        specialArgs = { inherit system inputs; };
+
+  outputs = inputs@{ self, nixpkgs, flake-utils-plus, home-manager, agenix
+    , nix-gaming, guix-overlay }:
+    flake-utils-plus.lib.mkFlake {
+      inherit self inputs;
+
+      channelsConfig.allowUnfree = true;
+
+      sharedOverlays = [ self.overlay guix-overlay.overlays.default ];
+
+      # Modules shared between all hosts
+      hostDefaults.modules = [
+        home-manager.nixosModules.home-manager
+        # ./modules/sharedConfigurationBetweenHosts.nix
+      ];
+      hostDefaults.extraArgs = {
+        inherit guix-overlay; # inherit inputs;
       };
+
+      hosts.remimimimimi.modules = [ ./hosts/remimimimimi.nix ];
+
+      overlay = import ./overlays;
     };
 }
