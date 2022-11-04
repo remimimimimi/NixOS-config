@@ -39,6 +39,7 @@
       # Modules shared between all hosts
       hostDefaults.modules = [
         home-manager.nixosModules.home-manager
+        guix-overlay.nixosModules.guix
         # ./modules/sharedConfigurationBetweenHosts.nix
       ];
       hostDefaults.extraArgs = {
