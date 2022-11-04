@@ -30,7 +30,11 @@
 
       channelsConfig.allowUnfree = true;
 
-      sharedOverlays = [ self.overlay guix-overlay.overlays.default ];
+      sharedOverlays = [
+        self.overlay
+        guix-overlay.overlays.default
+        (final: prev: { mm0-rs = mm0.packages.${prev.system}.mm0-rs; })
+      ];
 
       # Modules shared between all hosts
       hostDefaults.modules = [
@@ -38,7 +42,7 @@
         # ./modules/sharedConfigurationBetweenHosts.nix
       ];
       hostDefaults.extraArgs = {
-        inherit guix-overlay mm0; # inherit inputs;
+        inherit guix-overlay; # inherit inputs;
       };
 
       hosts.remimimimimi.modules = [ ./hosts/remimimimimi.nix ];

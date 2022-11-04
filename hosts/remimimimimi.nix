@@ -2,13 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, guix-overlay, mm0, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../modules/shell/zsh.nix
-    # guix-overlay.nixosModules.guix
   ];
 
   nix.settings = {
@@ -147,7 +146,7 @@
 
     # metamath stuff
     metamath
-    mm0.packages.x86_64-linux.mm0-rs
+    mm0-rs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
