@@ -19,10 +19,12 @@
     nix-gaming.url = "github:fufexan/nix-gaming";
 
     guix-overlay.url = "github:foo-dogsquared/nix-overlay-guix";
+
+    mm0.url = "github:digama0/mm0";
   };
 
   outputs = inputs@{ self, nixpkgs, flake-utils-plus, home-manager, agenix
-    , nix-gaming, guix-overlay }:
+    , nix-gaming, guix-overlay, mm0 }:
     flake-utils-plus.lib.mkFlake {
       inherit self inputs;
 
@@ -36,7 +38,7 @@
         # ./modules/sharedConfigurationBetweenHosts.nix
       ];
       hostDefaults.extraArgs = {
-        inherit guix-overlay; # inherit inputs;
+        inherit guix-overlay mm0; # inherit inputs;
       };
 
       hosts.remimimimimi.modules = [ ./hosts/remimimimimi.nix ];

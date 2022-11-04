@@ -2,14 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, guix-overlay, ... }:
+{ config, pkgs, guix-overlay, mm0, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../modules/shell/zsh.nix
     # guix-overlay.nixosModules.guix
-
   ];
 
   nix.settings = {
@@ -101,11 +100,11 @@
   # services.guix.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.defaultUserShell = pkgs.zsh;
   users.users.remimimimimi = {
     isNormalUser = true;
     description = "Remi";
     extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.zsh;
     packages = with pkgs; [
       exa
       bat
@@ -121,17 +120,34 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # Almost best text editor in the world
     ((emacsPackagesFor emacs28).emacsWithPackages (epkgs: [ epkgs.vterm ]))
+
+    # Langs
     rnix-lsp
     nixfmt
+
     chez
+
     python3
+
+    sbcl
+    ecl
+
+    # CLI
+    wget
+
+    # Browsers
     firefox
+    nyxt
+
+    # Shitty stuff
     tdesktop
     (discord.override { nss = nss_latest; })
 
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
+    # metamath stuff
+    metamath
+    mm0.packages.x86_64-linux.mm0-rs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -160,5 +176,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
-
 }
