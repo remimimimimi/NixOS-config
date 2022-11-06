@@ -126,6 +126,8 @@
     rnix-lsp
     nixfmt
 
+    racket
+
     chez
 
     python3
