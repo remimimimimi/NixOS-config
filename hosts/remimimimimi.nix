@@ -148,6 +148,9 @@
     curl
     ripgrep
     fd
+    exa
+    bat
+    direnv
 
     # Browsers
     firefox
