@@ -104,13 +104,11 @@
     isNormalUser = true;
     description = "Remi";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      exa
-      bat
-      direnv
-      starship
-      #  thunderbird
-    ];
+    packages = with pkgs;
+      [
+        starship
+        #  thunderbird
+      ];
   };
 
   fonts = {
