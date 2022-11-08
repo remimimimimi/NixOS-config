@@ -139,6 +139,8 @@
     cargo
     rust-analyzer
 
+    cbqn
+
     # CLI
     wget
 
