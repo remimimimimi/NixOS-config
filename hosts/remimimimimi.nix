@@ -135,6 +135,10 @@
     sbcl
     ecl
 
+    rustc
+    cargo
+    rust-analyzer
+
     # CLI
     wget
 
