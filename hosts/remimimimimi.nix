@@ -109,9 +109,6 @@
       bat
       direnv
       starship
-      curl
-      ripgrep
-      fd
       #  thunderbird
     ];
   };
@@ -147,6 +144,10 @@
 
     # CLI
     wget
+    git
+    curl
+    ripgrep
+    fd
 
     # Browsers
     firefox
