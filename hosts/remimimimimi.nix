@@ -63,7 +63,12 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager = {
+    gdm.enable = true;
+    sessionCommands = ''
+      ${pkgs.xorg.xset}/bin/xset r rate 200 50
+    '';
+  };
   services.xserver.desktopManager.gnome.enable = true;
   # services.xserver.windowManager.exwm.enable = true;
 
