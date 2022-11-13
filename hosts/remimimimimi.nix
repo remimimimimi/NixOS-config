@@ -135,6 +135,7 @@
     chez
 
     python3
+    pyright
 
     sbcl
     ecl
