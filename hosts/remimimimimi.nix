@@ -109,6 +109,7 @@
     isNormalUser = true;
     description = "Remi";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
     packages = with pkgs;
       [
         starship
@@ -155,6 +156,7 @@
     exa
     bat
     direnv
+    zsh
 
     # Browsers
     firefox
