@@ -81,7 +81,7 @@
     '';
   };
   services.xserver.desktopManager.gnome.enable = true;
-  # services.xserver.windowManager.exwm.enable = true;
+  services.xserver.windowManager.i3.enable = true;
 
   # Configure keymap in X11
   services.xserver = {
