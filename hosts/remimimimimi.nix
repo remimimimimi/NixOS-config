@@ -113,6 +113,7 @@
   # services.xserver.libinput.enable = true;
 
   # services.guix.enable = true;
+  services.flatpak.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
