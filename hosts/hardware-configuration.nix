@@ -4,26 +4,29 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "sd_mod" ];
+  boot.kernelPackages = pkgs.linuxPackages_6_0;
+  hardware.firmware = [ pkgs.rtw89-firmware ];
+
+  boot.initrd.availableKernelModules =
+    [ "nvme" "xhci_pci" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/d1ab8552-0465-475a-92c2-a35edf7b7b9e";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/d1ab8552-0465-475a-92c2-a35edf7b7b9e";
+    fsType = "ext4";
+  };
 
-  boot.initrd.luks.devices."luks-e07e2a69-073a-4098-a3c7-8b13a4e8b9da".device = "/dev/disk/by-uuid/e07e2a69-073a-4098-a3c7-8b13a4e8b9da";
+  boot.initrd.luks.devices."luks-e07e2a69-073a-4098-a3c7-8b13a4e8b9da".device =
+    "/dev/disk/by-uuid/e07e2a69-073a-4098-a3c7-8b13a4e8b9da";
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/4626-DCBB";
-      fsType = "vfat";
-    };
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-uuid/4626-DCBB";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 
@@ -34,5 +37,6 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp4s0f3u1.useDHCP = lib.mkDefault true;
 
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
