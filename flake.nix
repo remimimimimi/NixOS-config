@@ -33,6 +33,7 @@
       sharedOverlays = [
         self.overlay
         guix-overlay.overlays.default
+        nix-gaming.overlays.default
         (final: prev: { mm0-rs = mm0.packages.${prev.system}.mm0-rs; })
       ];
 

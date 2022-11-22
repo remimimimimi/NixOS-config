@@ -177,6 +177,7 @@
     # Shitty stuff
     tdesktop
     (discord.override { nss = nss_latest; })
+    osu-lazer-bin
 
     # metamath stuff
     metamath
