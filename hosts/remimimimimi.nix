@@ -157,6 +157,9 @@
     cargo
     rust-analyzer
 
+    clang
+    clang-tools
+
     cbqn
 
     # CLI
