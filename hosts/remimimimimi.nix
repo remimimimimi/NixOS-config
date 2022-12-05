@@ -71,22 +71,15 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager = {
-    gdm.enable = true;
-    sessionCommands = ''
-      ${pkgs.xorg.xset}/bin/xset r rate 200 50
-    '';
-  };
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.windowManager.i3.enable = true;
-
-  # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    enable = true;
+    # Enable the GNOME Desktop Environment.
+    services.xserver.displayManager.gdm.enable = true;
+    services.xserver.desktopManager.gnome.enable = true;
+
+    # Configure keymap in X11
+    services.xserver.layout = "us";
+
   };
 
   # Enable CUPS to print documents.
@@ -129,9 +122,7 @@
       ];
   };
 
-  fonts = {
-    fonts = with pkgs; [ (nerdfonts.override { fonts = [ "Iosevka" ]; }) ];
-  };
+  fonts.fonts = with pkgs; [ (nerdfonts.override { fonts = [ "Iosevka" ]; }) ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
