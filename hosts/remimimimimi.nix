@@ -173,7 +173,7 @@
     osu-lazer-bin
 
     # Cool stuff
-    element
+    element-desktop-wayland
 
     # metamath stuff
     metamath
