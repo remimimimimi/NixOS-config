@@ -172,6 +172,9 @@
     (discord.override { nss = nss_latest; })
     osu-lazer-bin
 
+    # Cool stuff
+    element
+
     # metamath stuff
     metamath
     mm0-rs
