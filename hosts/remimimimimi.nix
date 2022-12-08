@@ -154,7 +154,7 @@
 
     # CLI
     wget
-    git
+    gitFull # YEAS I FINALLY HAVE FULL ;)
     curl
     ripgrep
     fd
