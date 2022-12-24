@@ -43,9 +43,9 @@
         guix-overlay.nixosModules.guix
         # ./modules/sharedConfigurationBetweenHosts.nix
       ];
-      hostDefaults.extraArgs = {
-        inherit guix-overlay; # inherit inputs;
-      };
+      # hostDefaults.extraArgs = {
+      #
+      # };
 
       hosts.remimimimimi.modules = [ ./hosts/remimimimimi.nix ];
 
