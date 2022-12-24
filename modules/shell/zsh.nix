@@ -8,11 +8,11 @@
       customPkgs = [ pkgs.nix-zsh-completions ];
     };
 
-    syntaxHighlighting = { enable = true; };
+    syntaxHighlighting.enable = true;
 
     enableCompletion = true;
 
-    autosuggestions = { enable = true; };
+    autosuggestions.enable = true;
 
     shellAliases = {
       weather = "curl wttr.in";
