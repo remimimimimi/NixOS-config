@@ -14,18 +14,18 @@
     substituters = [
       # Inputs
       "https://foo-dogsquared.cachix.org"
-      "https://nix-gaming.cachix.org"
+      # "https://nix-gaming.cachix.org"
       # Spectrum
-      "http://cache.vedenemo.dev"
+      # "http://cache.vedenemo.dev"
       "https://cache.dataaturservice.se/spectrum/"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       # Inputs
       "foo-dogsquared.cachix.org-1:/2fmqn/gLGvCs5EDeQmqwtus02TUmGy0ZlAEXqRE70E="
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+      # "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
       # Spectrum
-      "cache.vedenemo.dev:RGHheQnb6rXGK5v9gexJZ8iWTPX6OcSeS56YeXYzOcg="
+      # "cache.vedenemo.dev:RGHheQnb6rXGK5v9gexJZ8iWTPX6OcSeS56YeXYzOcg="
       "spectrum-os.org-1:rnnSumz3+Dbs5uewPlwZSTP0k3g/5SRG4hD7Wbr9YuQ="
     ];
     experimental-features = [ "nix-command" "flakes" ];
@@ -41,6 +41,9 @@
 
   # Setup keyfile
   boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
+
+  # Meh
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -107,6 +110,8 @@
   # services.guix.enable = true;
   services.flatpak.enable = true;
 
+  services.mullvad-vpn.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
   users.users.remimimimimi = {
@@ -165,7 +170,7 @@
     zsh
 
     # Browsers
-    firefox
+    firefox-wayland
     nyxt
 
     # Shitty stuff
@@ -207,6 +212,8 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  networking.firewall.checkReversePath = "loose";
+  networking.wireguard.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
