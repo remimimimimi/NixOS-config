@@ -131,9 +131,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # Almost best text editor in the world
-    ((emacsPackagesFor emacs28).emacsWithPackages (epkgs: [ epkgs.vterm ]))
-
     # Langs
     rnix-lsp
     nixfmt
@@ -194,6 +191,13 @@
   #   enableSSHSupport = true;
   # };
 
+  service.emacs = {
+    enable = true;
+    # Almost best text editor in the world
+    package = ((pkgs.emacsPackagesFor pkgs.emacs28).emacsWithPackages (epkgs: [ epkgs.vterm ]));
+
+  };
+  
   # TODO: Move to module
   programs.steam = {
     enable = true;
