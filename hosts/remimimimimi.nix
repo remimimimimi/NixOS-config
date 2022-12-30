@@ -191,11 +191,10 @@
   #   enableSSHSupport = true;
   # };
 
-  service.emacs = {
+  services.emacs = {
     enable = true;
     # Almost best text editor in the world
     package = ((pkgs.emacsPackagesFor pkgs.emacs28).emacsWithPackages (epkgs: [ epkgs.vterm ]));
-
   };
   
   # TODO: Move to module
