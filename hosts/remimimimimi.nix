@@ -196,6 +196,8 @@
     # Almost best text editor in the world
     package = ((pkgs.emacsPackagesFor pkgs.emacs28).emacsWithPackages (epkgs: [ epkgs.vterm ]));
   };
+
+  musnix.enable = true;
   
   # TODO: Move to module
   programs.steam = {

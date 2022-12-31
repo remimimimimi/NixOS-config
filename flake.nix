@@ -21,10 +21,15 @@
     guix-overlay.url = "github:foo-dogsquared/nix-overlay-guix";
 
     mm0.url = "github:digama0/mm0";
+
+    musnix = {
+      url = "github:musnix/musnix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, flake-utils-plus, home-manager, agenix
-    , nix-gaming, guix-overlay, mm0 }:
+    , nix-gaming, guix-overlay, mm0, musnix }:
     flake-utils-plus.lib.mkFlake {
       inherit self inputs;
 
@@ -41,6 +46,7 @@
       hostDefaults.modules = [
         home-manager.nixosModules.home-manager
         guix-overlay.nixosModules.guix
+        musnix.nixosModules.musnix
         # ./modules/sharedConfigurationBetweenHosts.nix
       ];
       # hostDefaults.extraArgs = {
