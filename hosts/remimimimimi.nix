@@ -165,6 +165,7 @@
     bat
     direnv
     zsh
+    gnupg
 
     # Browsers
     firefox-wayland
