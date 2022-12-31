@@ -117,7 +117,7 @@
   users.users.remimimimimi = {
     isNormalUser = true;
     description = "Remi";
-    extraGroups = [ "networkmanager" "wheel" "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "audio" "realtime" ];
     shell = pkgs.zsh;
     packages = with pkgs;
       [
