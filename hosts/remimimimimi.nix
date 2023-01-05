@@ -5,7 +5,8 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../modules/shell/zsh.nix
   ];
@@ -133,7 +134,7 @@
   environment.systemPackages = with pkgs; [
     # Langs
     rnix-lsp
-    nixfmt
+    alejandra
 
     racket
 
@@ -199,7 +200,7 @@
   };
 
   musnix.enable = true;
-  
+
   # TODO: Move to module
   programs.steam = {
     enable = true;

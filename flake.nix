@@ -2,7 +2,7 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NickCao/nixpkgs/tdesktop";
 
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
@@ -26,10 +26,25 @@
       url = "github:musnix/musnix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    alejandra = {
+      url = "github:kamadorueda/alejandra/3.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils-plus, home-manager, agenix
-    , nix-gaming, guix-overlay, mm0, musnix }:
+  outputs =
+    inputs@{ self
+    , nixpkgs
+    , flake-utils-plus
+    , home-manager
+    , agenix
+    , nix-gaming
+    , guix-overlay
+    , mm0
+    , musnix
+    , alejandra
+    }:
     flake-utils-plus.lib.mkFlake {
       inherit self inputs;
 
@@ -40,6 +55,7 @@
         guix-overlay.overlays.default
         nix-gaming.overlays.default
         (final: prev: { mm0-rs = mm0.packages.${prev.system}.mm0-rs; })
+        alejandra.overlay
       ];
 
       # Modules shared between all hosts
