@@ -2,7 +2,7 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:NickCao/nixpkgs/tdesktop";
+    nixpkgs.url = "github:NixOS/nixpkgs";
 
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
@@ -66,7 +66,7 @@
         # ./modules/sharedConfigurationBetweenHosts.nix
       ];
       # hostDefaults.extraArgs = {
-      #
+      #   pkgs-unstable = import nixpkgs-unstable { localSystem = "x86_64-linux"; };
       # };
 
       hosts.remimimimimi.modules = [ ./hosts/remimimimimi.nix ];
