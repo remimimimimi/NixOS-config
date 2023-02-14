@@ -136,6 +136,8 @@
 
     chez
 
+    red
+
     python3
     pyright
 
