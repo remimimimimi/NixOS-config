@@ -65,7 +65,7 @@
       # Modules shared between all hosts
       hostDefaults.modules = [
         home-manager.nixosModules.home-manager
-        guix-overlay.nixosModules.guix
+        guix-overlay.nixosModules.guix-binary
         musnix.nixosModules.musnix
         # ./modules/sharedConfigurationBetweenHosts.nix
       ];

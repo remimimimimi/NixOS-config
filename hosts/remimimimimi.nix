@@ -108,7 +108,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # services.guix.enable = true;
+  services.guix-binary.enable = true;
   services.flatpak.enable = true;
 
   services.mullvad-vpn.enable = true;
@@ -167,6 +167,7 @@
     direnv
     zsh
     gnupg
+    guix_binary_1_3_0
 
     # Browsers
     firefox-wayland
