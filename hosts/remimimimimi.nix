@@ -138,6 +138,8 @@
 
     red
 
+    ciao # This is just prolog implementation
+
     python3
     pyright
 
