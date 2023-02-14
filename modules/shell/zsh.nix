@@ -96,6 +96,7 @@
       export PATH="$HOME/.cargo/bin:$PATH"
       export PATH="$HOME/.local/bin:$PATH"
       export PATH="$HOME/.emacs.d/bin:$PATH"
+      export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
     '';
   };
 }
