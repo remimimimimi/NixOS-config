@@ -168,6 +168,7 @@
     zsh
     gnupg
     guix_binary_1_3_0
+    guile
 
     # Browsers
     firefox-wayland
