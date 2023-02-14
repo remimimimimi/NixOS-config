@@ -176,6 +176,7 @@
 
     # Cool stuff
     element-desktop-wayland
+    strawberry
 
     # metamath stuff
     metamath
