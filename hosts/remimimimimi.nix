@@ -110,6 +110,7 @@
   services.mullvad-vpn.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  environment.shells = [ pkgs.zsh ];
   users.defaultUserShell = pkgs.zsh;
   users.users.remimimimimi = {
     isNormalUser = true;
