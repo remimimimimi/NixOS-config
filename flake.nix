@@ -20,6 +20,8 @@
 
     guix-overlay.url = "github:foo-dogsquared/nix-overlay-guix";
 
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+
     mm0.url = "github:digama0/mm0";
 
     musnix = {
@@ -41,6 +43,7 @@
     , agenix
     , nix-gaming
     , guix-overlay
+    , emacs-overlay
     , mm0
     , musnix
     , alejandra
@@ -53,6 +56,7 @@
       sharedOverlays = [
         self.overlay
         guix-overlay.overlays.default
+        emacs-overlay.overlays.emacs
         nix-gaming.overlays.default
         (final: prev: { mm0-rs = mm0.packages.${prev.system}.mm0-rs; })
         alejandra.overlay

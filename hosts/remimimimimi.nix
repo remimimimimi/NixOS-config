@@ -196,7 +196,7 @@
   services.emacs = {
     enable = true;
     # Almost best text editor in the world
-    package = ((pkgs.emacsPackagesFor pkgs.emacs28).emacsWithPackages (epkgs: [ epkgs.vterm ]));
+    package = ((pkgs.emacsPackagesFor pkgs.emacs28NativeComp).emacsWithPackages (epkgs: [ epkgs.vterm ]));
   };
 
   musnix.enable = true;
