@@ -130,7 +130,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # Langs
-    rnix-lsp
+    nil # Nix language server
     alejandra
 
     racket
