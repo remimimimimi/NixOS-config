@@ -51,7 +51,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    emacs
     firefox-wayland
     kitty
     wofi
@@ -62,7 +61,7 @@
   services.emacs = {
     enable = true;
     # Almost best text editor in the world
-    package = (pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (epkgs: [epkgs.vterm]);
+    package = pkgs.emacs-pgtk;
   };
 
   programs.gnupg.agent = {
