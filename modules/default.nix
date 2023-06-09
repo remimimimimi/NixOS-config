@@ -63,7 +63,7 @@
   services.emacs = {
     enable = true;
     # Almost best text editor in the world
-    package = pkgs.emacs-pgtk;
+    package = (pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (epkgs: [epkgs.vterm]);
   };
 
   programs.gnupg.agent = {
