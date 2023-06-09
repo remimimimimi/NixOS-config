@@ -3,7 +3,10 @@
   pkgs,
   ...
 }: {
-  environment.systemPackages = with pkgs; [direnv starship];
+  environment.systemPackages = with pkgs; [direnv starship zsh];
+  environment.shells = with pkgs; [zsh];
+  users.defaultUserShell = pkgs.zsh;
+  
   programs.zsh = {
     enable = true;
     ohMyZsh = {
@@ -27,7 +30,7 @@
       hearvoice = "pactl load-module module-loopback adjust_time=0 latency_msec=1 >> /dev/null";
       unhearvoice = "pactl unload-module module-loopback";
 
-      nors = "sudo nixos-rebuild switch --flake /home/remi/Projects/Mine/NixOS-config#remimimimimi"; # TODO
+      nors = "sudo nixos-rebuild switch --flake /home/remi/Projects/Mine/NixOS-config#hp";
     };
 
     promptInit = ''
