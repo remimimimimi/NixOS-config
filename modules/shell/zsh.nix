@@ -1,11 +1,14 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
+  environment.systemPackages = with pkgs; [direnv starship];
   programs.zsh = {
     enable = true;
     ohMyZsh = {
       enable = true;
-      customPkgs = [ pkgs.nix-zsh-completions ];
+      customPkgs = [pkgs.nix-zsh-completions];
     };
 
     syntaxHighlighting.enable = true;
@@ -17,45 +20,14 @@
     shellAliases = {
       weather = "curl wttr.in";
 
-      e = "emacsclient";
-      tsm = "transmission-remote";
       py = "python3";
       python = "python3";
-      cat = "bat --paging=never";
-
-      ls = "exa";
-      ll = "exa -l";
-      la = "exa -la";
-
-      # Rust aliases
-      cr = "cargo run";
-      crr = "cargo run --release";
-      cb = "cargo build";
-      cbr = "cargo build --release";
-      ct = "cargo test";
-      cch = "cargo check";
-      ccl = "cargo clean";
-      cx = "cargo xtask";
-
-      # git alias
-      s = "git status";
-      a = "git add";
-      c = "git commit";
-      cpo = "git commit && git push origin";
-      cpom = "git commit && git push origin master";
-      p = "git push origin";
-      d = "git diff";
 
       # pulse audio
-      hearvoice =
-        "pactl load-module module-loopback adjust_time=0 latency_msec=1 >> /dev/null";
+      hearvoice = "pactl load-module module-loopback adjust_time=0 latency_msec=1 >> /dev/null";
       unhearvoice = "pactl unload-module module-loopback";
 
-      # Nix
-      nsh = "nix-shell --command zsh";
-      nors =
-        "sudo nixos-rebuild switch --flake /home/remimimimimi/Projects/Mine/NixOS-config#remimimimimi"; # TODO
-      nd = "nix develop";
+      nors = "sudo nixos-rebuild switch --flake /home/remi/Projects/Mine/NixOS-config#remimimimimi"; # TODO
     };
 
     promptInit = ''
@@ -87,16 +59,10 @@
                echo "'$1' is not a valid file"
            fi
       }
+      # TODO: Move to environment.variables
       export EDITOR="emacsclient"
-      export PAGER="bat"
-      export MANPAGER="bat"
-      # export RUSTC_WRAPPER=""
-      # export RUSTC_WORKSPACE_WRAPPER="sccache"
-      # export GTK_THEME="Arc:dark"
       export PATH="$HOME/.cargo/bin:$PATH"
       export PATH="$HOME/.local/bin:$PATH"
-      export PATH="$HOME/.emacs.d/bin:$PATH"
-      export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
     '';
   };
 }

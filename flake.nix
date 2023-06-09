@@ -1,8 +1,9 @@
 {
-  description = "A very basic flake";
+  description = "My nixos configurations";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
 
@@ -11,23 +12,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agenix = {
-      url = "github:ryantm/agenix";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-gaming.url = "github:fufexan/nix-gaming";
-
-    guix-overlay.url = "github:foo-dogsquared/nix-overlay-guix";
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-
-    mm0.url = "github:digama0/mm0";
-
-    musnix = {
-      url = "github:musnix/musnix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     alejandra = {
       url = "github:kamadorueda/alejandra/3.0.0";
@@ -35,46 +25,35 @@
     };
   };
 
-  outputs =
-    inputs@{ self
-    , nixpkgs
-    , flake-utils-plus
-    , home-manager
-    , agenix
-    , nix-gaming
-    , guix-overlay
-    , emacs-overlay
-    , mm0
-    , musnix
-    , alejandra
-    }:
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    flake-utils-plus,
+    home-manager,
+    hyprland,
+    emacs-overlay,
+    alejandra,
+  }:
     flake-utils-plus.lib.mkFlake {
       inherit self inputs;
 
-      channelsConfig.allowUnfree = true;
-
       sharedOverlays = [
-        self.overlay
-        guix-overlay.overlays.default
+        (import ./packages)
         emacs-overlay.overlays.emacs
-        nix-gaming.overlays.default
-        (final: prev: { mm0-rs = mm0.packages.${prev.system}.mm0-rs; })
         alejandra.overlay
       ];
 
       # Modules shared between all hosts
       hostDefaults.modules = [
         home-manager.nixosModules.home-manager
-        guix-overlay.nixosModules.guix-binary
-        musnix.nixosModules.musnix
-        # ./modules/sharedConfigurationBetweenHosts.nix
+        # hyprland.homeManagerModules.default
+        ./modules
       ];
-      # hostDefaults.extraArgs = {
-      #   pkgs-unstable = import nixpkgs-unstable { localSystem = "x86_64-linux"; };
-      # };
+      hostDefaults.extraArgs = {
+        pkgs-unstable = import nixpkgs-unstable {localSystem = "x86_64-linux";};
+      };
 
-      hosts.remimimimimi.modules = [ ./hosts/remimimimimi.nix ];
-
-      overlay = import ./overlays;
+      hosts.hp.modules = [./hosts/hp];
     };
 }
