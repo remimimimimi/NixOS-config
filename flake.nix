@@ -12,11 +12,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     alejandra = {
@@ -31,7 +26,6 @@
     nixpkgs-unstable,
     flake-utils-plus,
     home-manager,
-    hyprland,
     emacs-overlay,
     alejandra,
   }:
@@ -46,8 +40,7 @@
 
       # Modules shared between all hosts
       hostDefaults.modules = [
-        home-manager.nixosModules.home-manager
-        # hyprland.homeManagerModules.default
+        home-manager.nixosModules.default
         ./modules
       ];
       hostDefaults.extraArgs = {
